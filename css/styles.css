@@ -170,13 +170,13 @@
 
 @keyframes preloader-type-1 {
   to {
-    width: 6ch;
+    width: 6.5ch;
   }
 }
 
 @keyframes preloader-type-2 {
   to {
-    width: 10ch;
+    width: 10.5ch;
   }
 }
 
@@ -202,12 +202,12 @@
 @media (prefers-reduced-motion: reduce) {
   .preloader-command {
     animation: none;
-    width: 6ch;
+    width: 6.5ch;
   }
 
   .preloader-command-2 {
     animation: none;
-    width: 10ch;
+    width: 10.5ch;
   }
 
   .preloader-output,
