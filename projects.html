@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects · Fisayo Balogun</title>
+    <meta name="description" content="All projects by Fisayo Balogun, self-taught backend developer based in Nigeria. Python, data pipelines, APIs." />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- =============================================
+      FONT
+      DM Mono → the one typeface used across the whole site.
+      Must stay in <head> so the browser downloads it
+      before it reads the stylesheet (avoids flash of wrong font).
+    ============================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- All styles live in css/styles.css -->
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Set the theme before first paint, so there's no flash of the
+         wrong theme while js/main.js (loaded at end of body) runs. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <!-- =============================================
+      BACKGROUND DECORATIONS
+      Blurred purple blobs for ambient glow atmosphere.
+      Pure visual — no content. Positioned via CSS.
+    ============================================= -->
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+    <div class="glow-blob glow-blob-3"></div>
+
+    <!-- =============================================
+      NAVIGATION
+      Same markup as index.html — /Projects points here already,
+      so it's just a plain (non-link) label on this page's nav.
+    ============================================= -->
+    <nav id="nav">
+      <a class="nav-logo" href="index.html">~/fisayo</a>
+
+      <!-- Desktop nav links (hidden on mobile via CSS) -->
+      <div class="nav-links" id="navLinks">
+        <a href="projects.html">/Projects</a>
+        <a href="index.html#about">/About</a>
+        <a href="index.html#contact">/Contact</a>
+        <a href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing" target="_blank">/Résumé</a>
+        <button class="theme-toggle" aria-label="Toggle theme" type="button">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span class="theme-toggle-label">Theme</span>
+        </button>
+      </div>
+
+      <!-- Hamburger button (only visible on mobile via CSS) -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+      <!-- Mobile menu panel — toggled by hamburger button via JS -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="projects.html">/Projects</a>
+      <a href="index.html#about">/About</a>
+      <a href="index.html#contact">/Contact</a>
+      <a href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing" target="_blank">/Résumé</a>
+      <button class="theme-toggle" aria-label="Toggle theme" type="button">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+    </div>
+
+    <!-- =============================================
+      PAGE HEADER
+      Back-link to home + page title + short intro.
+    ============================================= -->
+    <section>
+      <a href="index.html" class="page-back reveal">← Home</a>
+      <h1 class="page-heading reveal">Projects</h1>
+      <p class="page-sub reveal">
+        Client work, side projects, and things I built to learn something
+        new. Ranked roughly by how much they push me.
+      </p>
+
+      <!-- =============================================
+        FULL PROJECT LIST. The first 4 rows must match the
+        homepage's featured teaser in index.html, same order.
+        TO ADD A PROJECT: duplicate a .project-row block.
+      ============================================= -->
+      <div class="project-list">
+
+        <!-- ============ LIVE PROJECTS (real links) — hardest to easiest ============ -->
+
+        <a href="https://lagosferries.com/map" target="_blank" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Lagos Ferry Map</div>
+            <div class="project-row-desc">
+              The backend and data pipeline behind Lagos's first
+              comprehensive ferry map. A Node/Express/Drizzle API on
+              PostgreSQL powers public-facing crowdsourced submission forms
+              for jetties and routes. A parallel Python toolchain publishes
+              the GTFS feed, syncs route geometry from OSM/GeoJSON sources,
+              and runs automated data-quality checks against the live
+              database.
+            </div>
+            <div class="project-row-stack">Node.js · Express · TypeScript · PostgreSQL · Drizzle ORM · Python (GTFS/OSM pipelines)</div>
+          </div>
+        </a>
+
+        <a href="mailto:balogunfisayo23@gmail.com?subject=Demo%20request%3A%20Sports%20analytics%20pipeline" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Sports Analytics Automation Pipeline</div>
+            <div class="project-row-desc">
+              Built for a client, in production since June 2026. A production
+              data pipeline that automates a full sports-analytics workflow.
+              It scrapes live stats from five bot-protected sources,
+              joins them with fuzzy name-matching, and runs a 150-point scoring
+              model, writing ranked results back to Google Sheets. A
+              non-technical client triggers the whole run from a spreadsheet
+              button, turning a multi-hour daily process into a 5-minute
+              one-click run. <strong>Click through to request a live demo.</strong>
+            </div>
+            <div class="project-row-stack">Python · Playwright · pandas · Google Sheets API · GitHub Actions</div>
+          </div>
+        </a>
+
+        <a href="https://github.com/oluwafisayomi-balogun/bet-placer-bc-fun" target="_blank" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Sports Bet Automation</div>
+            <div class="project-row-desc">
+              Reverse-engineered an undocumented REST API to place single and
+              combo bets programmatically on bc.game. Implemented JWT auth,
+              input validation, and robust error handling, reducing manual
+              execution to a single function call.
+            </div>
+            <div class="project-row-stack">Python · REST APIs · Chrome DevTools</div>
+          </div>
+        </a>
+
+        <a href="https://t.me/RateFetchBot" target="_blank" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Exchange Rate Telegram Bot</div>
+            <div class="project-row-desc">
+              A live Telegram bot that fetches currency exchange rates on demand
+              and sends a daily rate broadcast via an in-process scheduler.
+              Storage swaps automatically between PostgreSQL in production and a
+              local JSON file in development, behind one shared interface.
+            </div>
+            <div class="project-row-stack">Python · aiogram · PostgreSQL · APScheduler · Railway</div>
+          </div>
+        </a>
+
+        <a href="https://drive.google.com/drive/folders/1CJMrGxNYlJ18tThowKHMcKSCW1wHNiRF?usp=sharing/" target="_blank" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Web Scraping &amp; Data Pipeline</div>
+            <div class="project-row-desc">
+              Automated web scraping from a login-protected site using Selenium.
+              Processed data with Pandas and stored to AWS S3 via boto3, fully
+              hands-off, cloud-synced output.
+            </div>
+            <div class="project-row-stack">Python · Selenium · Pandas · AWS S3</div>
+          </div>
+        </a>
+
+        <a href="https://weather-fetcher-4yrl.onrender.com/" target="_blank" class="project-row reveal">
+          <div class="project-row-main">
+            <div class="project-row-title">Weather Fetcher API</div>
+            <div class="project-row-desc">
+              Flask backend that chains multiple third-party API calls to convert
+              city names into real-time weather insights. Securely manages API
+              keys with env vars and deployed to Render.
+            </div>
+            <div class="project-row-stack">Python · Flask · REST APIs · Render</div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+      FOOTER
+      Edit: name, year, tagline.
+    ============================================= -->
+    <footer>
+      <span>© 2026 Oluwafisayomi Balogun</span>
+    </footer>
+
+    <!-- Script at end of <body> so all HTML elements
+         exist before JS tries to query them. -->
+    <script src="js/main.js"></script>
+
+  </body>
+</html>

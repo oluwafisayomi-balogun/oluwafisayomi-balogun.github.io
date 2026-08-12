@@ -7,55 +7,224 @@
    1.  CSS Variables  (colour palette — edit here)
    2.  Reset & Base
    3.  Background textures & glow blobs
-   4.  Custom cursor
-   5.  Navigation (desktop)
-   6.  Navigation (mobile — hamburger menu)
-   7.  Hero section
-   8.  Python hover effect  (desktop only)
-   9.  Section shared styles
-   10. About section
-   11. Experience section
-   12. Projects section
-   13. Contact section
-   14. Footer
-   15. Scroll reveal animation
-   16. Responsive / mobile  (max-width: 768px)
+   4.  Navigation (desktop)
+   5.  Navigation (mobile — hamburger menu)
+   6.  Hero section
+   7.  Section shared styles
+   8.  About section
+   9.  Projects section
+   10. Contact section
+   11. Footer
+   12. Scroll reveal animation
+   13. Responsive / mobile  (max-width: 768px)
 ================================================================ */
-
 
 /* ================================================================
    1. CSS VARIABLES — COLOUR PALETTE
    Edit values here and the whole site updates automatically.
 ================================================================ */
 :root {
-  /* Brand Accent — Lilac Identity */
-  --accent:        #C4B5FD;  /* Primary lilac: highlights, links, active states */
-  --accent-strong: #A78BFA;  /* Deeper purple: hover states, emphasis           */
-  --accent-subtle: #DDD6FE;  /* Pale lilac: glow rings, tints                   */
+  /* Brand Accent — muted purple, used sparingly */
+  --accent: #6d4fc2; /* Primary purple: highlights, links, active states */
+  --accent-strong: #54399e; /* Deeper purple: hover states, emphasis            */
+  --accent-subtle: #ede8fa; /* Pale tint: glow rings, tints                     */
 
-  /* Dark Mode Base */
-  --bg:      #0B1020;        /* Page background                                 */
-  --bg2:     #11162A;        /* Card / panel background                         */
-  --surface: #181E35;        /* Hovered card background                         */
-  --text:    #EDEDFC;        /* Primary readable text                           */
-  --muted:   #A1A1B3;        /* Secondary / greyed-out text                     */
-  --border:  #1E2340;        /* Borders and dividers                            */
+  /* Light Base — warm paper */
+  --bg: #faf9f6; /* Page background                                 */
+  --bg2: #ffffff; /* Card / panel background                         */
+  --surface: #f3f1ec; /* Hovered card background                         */
+  --text: #1c1b1f; /* Primary readable text                           */
+  --muted: #66646b; /* Secondary / greyed-out text                     */
+  --border: #e4e1da; /* Borders and dividers                            */
 
   /* Utility */
-  --accent-glow: rgba(196, 181, 253, 0.12); /* Transparent tint for hover bg   */
+  --accent-glow: rgba(
+    109,
+    79,
+    194,
+    0.06
+  ); /* Transparent tint for hover bg    */
 
-  /* Typography */
-  --font-display: 'Fraunces', serif;    /* Big editorial headlines              */
-  --font-mono:    'DM Mono', monospace; /* Everything else                      */
+  /* Typography — one typeface everywhere */
+  --font-display:
+    "DM Mono", monospace; /* Headlines                            */
+  --font-mono: "DM Mono", monospace; /* Everything else                      */
 }
 
+/* Dark theme — activated via [data-theme="dark"] on <html>, set by js/main.js.
+   Same variable names, dark values. Everything downstream just works. */
+:root[data-theme="dark"] {
+  --accent: #8b6fe0;
+  --accent-strong: #a489f0;
+  --accent-subtle: #2a2340;
+
+  --bg: #0a0a0a;
+  --bg2: #141414;
+  --surface: #1c1c1c;
+  --text: #f2f1ed;
+  --muted: #9a98a0;
+  --border: #2a2a2a;
+
+  --accent-glow: rgba(139, 111, 224, 0.12);
+}
+
+/* Theme toggle transition — the new theme reveals outward as a circle
+   centered on the toggle button, like a light switching on/off at that
+   exact spot. The clip-path circle is animated directly in js/main.js
+   (WAAPI on the ::view-transition-new pseudo-element) with pixel coords
+   from the button, so we disable the default cross-fade here. Browsers
+   without View Transitions just swap instantly (see the JS fallback). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Chrome also animates ::view-transition-group(root) itself (a resize/scale
+   transform centered at 50% 50%) whenever the old/new snapshot dimensions
+   differ, which visually overrides the clip-path origin above and makes the
+   reveal appear to start from the center. Disable it so only the clip-path
+   animation drives the visual. */
+::view-transition-group(root) {
+  animation: none;
+}
+
+/* ================================================================
+   1b. PRELOADER
+   Full-screen overlay shown on every load/refresh, before the page
+   itself is revealed. Faded and removed by js/main.js once the page
+   has finished loading (with a minimum display time so it doesn't
+   just flash on fast connections).
+================================================================ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+}
+
+/* No box, no border — just the monospace text sitting directly on
+   the page background. Two real command/output pairs (whoami →
+   fisayo, then a second command → the job title), since a single
+   "whoami" wouldn't realistically print a job title. */
+.preloader-terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.preloader-prompt {
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+}
+
+.preloader-prompt.preloader-prompt-2 {
+  margin-top: 0.35rem;
+  opacity: 0;
+  animation: preloader-appear 0.01s linear 1.3s forwards;
+}
+
+.preloader-prompt-symbol {
+  color: var(--accent);
+  margin-right: 0.5em;
+}
+
+.preloader-command {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: preloader-type-1 0.5s steps(6, end) 0.2s forwards;
+}
+
+.preloader-command-2 {
+  animation: preloader-type-2 0.45s steps(10, end) 1.3s forwards;
+}
+
+.preloader-output {
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+.preloader-output-name {
+  color: var(--text);
+  animation: preloader-fade-in 0.3s ease 0.8s forwards;
+}
+
+.preloader-output-title {
+  color: var(--text);
+  animation: preloader-fade-in 0.3s ease 1.85s forwards;
+}
+
+@keyframes preloader-type-1 {
+  to {
+    width: 6ch;
+  }
+}
+
+@keyframes preloader-type-2 {
+  to {
+    width: 10ch;
+  }
+}
+
+@keyframes preloader-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes preloader-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+.preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-command {
+    animation: none;
+    width: 6ch;
+  }
+
+  .preloader-command-2 {
+    animation: none;
+    width: 10ch;
+  }
+
+  .preloader-output,
+  .preloader-prompt-2 {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* ================================================================
    2. RESET & BASE
    Removes default browser spacing. Sets global font and colours.
-   cursor: none hides the default so our custom one shows.
 ================================================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -66,15 +235,13 @@ html {
 }
 
 body {
-  background:  var(--bg);
-  color:       var(--text);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-mono);
-  font-size:   14px;
+  font-size: 14px;
   line-height: 1.7;
-  overflow-x:  hidden; /* Prevent horizontal scroll from animations */
-  cursor:      none;   /* Hide default cursor — custom cursor takes over */
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
-
 
 /* ================================================================
    3. BACKGROUND TEXTURES & GLOW BLOBS
@@ -87,7 +254,7 @@ body {
    position: fixed so they stay put while you scroll.
 ================================================================ */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
@@ -97,12 +264,19 @@ body::before {
 }
 
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(196, 181, 253, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196, 181, 253, 0.04) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--accent) 12%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 12%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 60px 60px;
   pointer-events: none;
   z-index: 0;
@@ -114,67 +288,56 @@ body::after {
   filter: blur(110px);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.16;
+  opacity: 0.09; /* faint on the light background — warmth, not neon */
 }
 
 /* Reposition blobs by editing top / right / bottom / left */
-.glow-blob-1 { width: 520px; height: 520px; background: var(--accent);        top: -160px; right: -80px;  }
-.glow-blob-2 { width: 360px; height: 360px; background: var(--accent-strong);  bottom: 20%; left: -100px; }
-.glow-blob-3 { width: 260px; height: 260px; background: var(--accent-subtle);  top: 50%;    right: 10%;   }
-
-
-/* ================================================================
-   4. CUSTOM CURSOR
-   .cursor      — small filled dot, snaps instantly to mouse
-   .cursor-ring — larger hollow ring, lags behind (JS lerp)
-   mix-blend-mode: difference inverts colours where cursor overlaps.
-   Hidden on mobile (touch screens don't hover).
-================================================================ */
-.cursor {
-  width: 10px;
-  height: 10px;
+.glow-blob-1 {
+  width: 520px;
+  height: 520px;
   background: var(--accent);
-  border-radius: 50%;
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
+  top: -160px;
+  right: -80px;
 }
-
-.cursor-ring {
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(196, 181, 253, 0.5);
-  border-radius: 50%;
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+.glow-blob-2 {
+  width: 360px;
+  height: 360px;
+  background: var(--accent-strong);
+  bottom: 20%;
+  left: -100px;
 }
-
+.glow-blob-3 {
+  width: 260px;
+  height: 260px;
+  background: var(--accent-subtle);
+  top: 50%;
+  right: 10%;
+}
 
 /* ================================================================
-   5. NAVIGATION — DESKTOP
+   4. NAVIGATION — DESKTOP
    Fixed at top. Transparent by default.
    JS adds .scrolled when window.scrollY > 20 → frosted glass.
 ================================================================ */
 nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 500;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 48px;
+  padding: 20px 60px;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.3s, background 0.3s;
+  transition:
+    border-color 0.3s,
+    background 0.3s;
 }
 
 nav.scrolled {
   border-color: var(--border);
-  background: rgba(11, 16, 32, 0.85);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(20px);
 }
 
@@ -196,28 +359,66 @@ nav.scrolled {
   text-decoration: none;
   font-size: 12px;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   transition: color 0.2s;
   position: relative;
 }
 
 /* Underline that slides in from left on hover */
 .nav-links a::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -2px; left: 0;
+  bottom: -2px;
+  left: 0;
   width: 0;
   height: 1px;
   background: var(--accent);
   transition: width 0.25s ease;
 }
 
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover {
+  color: var(--text);
+}
+.nav-links a:hover::after {
+  width: 100%;
+}
 
+/* Theme toggle — sun/moon icon button, sits at the end of the nav links */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.theme-toggle:hover {
+  color: var(--text);
+}
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+.theme-toggle .icon-moon {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: block;
+}
+.theme-toggle-label {
+  display: none;
+} /* shown only inside the mobile menu */
 
 /* ================================================================
-   6. NAVIGATION — MOBILE HAMBURGER MENU
+   5. NAVIGATION — MOBILE HAMBURGER MENU
    Hamburger button: three horizontal bars that animate into an X.
    .nav-open (added by JS) slides the mobile menu down.
 ================================================================ */
@@ -242,21 +443,31 @@ nav.scrolled {
   height: 2px;
   background: var(--accent);
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
   transform-origin: center;
 }
 
 /* Animate bars into an X when .open is added by JS */
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg);  }
-.hamburger.open span:nth-child(2) { opacity: 0;                                 }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 
 /* Mobile dropdown menu panel */
 .mobile-menu {
   display: none; /* shown in media query */
   position: fixed;
-  top: 0; left: 0; right: 0;
-  background: rgba(11, 16, 32, 0.97);
+  top: 0;
+  left: 0;
+  right: 0;
+  background: color-mix(in srgb, var(--bg) 97%, transparent);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 64px 24px 24px;
@@ -277,13 +488,15 @@ nav.scrolled {
   display: block;
   font-size: 13px;
   letter-spacing: 0.15em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   font-family: var(--font-mono);
   color: var(--muted);
   text-decoration: none;
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
-  transition: color 0.2s, padding-left 0.2s;
+  transition:
+    color 0.2s,
+    padding-left 0.2s;
 }
 
 .mobile-menu a:hover {
@@ -291,9 +504,37 @@ nav.scrolled {
   padding-left: 8px;
 }
 
+/* Theme toggle row inside the mobile menu — same look as the links */
+.mobile-menu .theme-toggle {
+  width: auto;
+  height: auto;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: lowercase;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  transition:
+    color 0.2s,
+    padding-left 0.2s;
+}
+.mobile-menu .theme-toggle:hover {
+  color: var(--accent);
+  padding-left: 8px;
+}
+.mobile-menu .theme-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+.mobile-menu .theme-toggle-label {
+  display: inline;
+}
 
 /* ================================================================
-   7. HERO SECTION
+   6. HERO SECTION
    Full viewport height. Content vertically centred.
    Elements fade up on load via CSS keyframe animations.
 ================================================================ */
@@ -304,7 +545,7 @@ nav.scrolled {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 48px;
+  padding: 0 60px;
 }
 
 /* Pulsing availability badge */
@@ -322,16 +563,24 @@ nav.scrolled {
 }
 
 .hero-badge::before {
-  content: '';
-  width: 6px; height: 6px;
+  content: "";
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent);
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1);   }
-  50%       { opacity: 0.4; transform: scale(0.7); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
 }
 
 /* Main headline */
@@ -346,18 +595,6 @@ nav.scrolled {
   animation: fadeUp 0.8s 0.35s forwards;
 }
 
-/* <em> inside h1 — italic, primary text colour, slightly smaller */
-.hero h1 em {
-  font-style: italic;
-  color: var(--text);
-  font-size: 0.5em;
-}
-
-/* The word "purple" in accent colour */
-.purple-word {
-  color: var(--accent);
-}
-
 /* Sub-paragraph */
 .hero-sub {
   font-size: 15px;
@@ -368,17 +605,10 @@ nav.scrolled {
   animation: fadeUp 0.8s 0.5s forwards;
 }
 
-/* <span> inside hero-sub = white highlighted words */
-.hero-sub span { color: var(--text); }
-
-/* Typewriter cycling text */
-.typewriter {
-  color: var(--accent);
-  border-right: 2px solid var(--accent);
-  animation: blink 1s step-end infinite;
+/* <span> inside hero-sub = highlighted words */
+.hero-sub span {
+  color: var(--text);
 }
-
-@keyframes blink { 50% { border-color: transparent; } }
 
 /* CTA button row */
 .hero-cta {
@@ -389,333 +619,293 @@ nav.scrolled {
   animation: fadeUp 0.8s 0.65s forwards;
 }
 
-/* Shared button base */
+/* Shared button base — rounded pills */
 .btn {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 14px 28px;
+  font-size: 14px;
+  padding: 13px 30px;
   text-decoration: none;
-  border-radius: 3px;
-  transition: all 0.25s ease;
-  cursor: none;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-  font-weight: 500;
-}
-.btn-primary:hover {
-  background: var(--accent-subtle);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(196, 181, 253, 0.3);
-}
-
+/* Outline pill — ink border + text, fills purple on hover */
 .btn-ghost {
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border-color: var(--text);
+  color: var(--text);
 }
 .btn-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-2px);
-}
-
-/* Scroll hint at bottom of hero (hidden on mobile) */
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 40px; left: 48px;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  opacity: 0;
-  animation: fadeUp 0.8s 1s forwards;
-}
-
-.scroll-line {
-  width: 40px;
-  height: 1px;
-  background: var(--border);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shimmer that slides across the scroll line */
-.scroll-line::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
   background: var(--accent);
-  animation: scrollSlide 2s 1.5s infinite;
+  border-color: var(--accent);
+  color: #ffffff;
 }
 
-@keyframes scrollSlide {
-  0%   { left: -100%; }
-  100% { left: 100%;  }
+/* Scroll cue: bouncing chevron, centered on the viewport's vertical midline.
+   Uses its own fade-in keyframes (not the shared fadeUp) because fadeUp only
+   sets translateY, which would wipe out the translateX(-50%) centering. */
+.scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent-strong);
+  opacity: 0;
+  animation: scrollCueFadeIn 0.8s 1s forwards;
+}
+
+@keyframes scrollCueFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.scroll-cue svg {
+  animation: chevronBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes chevronBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
 }
 
 /* Shared entrance animation */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
-
-/* ================================================================
-   8. PYTHON HOVER EFFECT — DESKTOP ONLY
-   The word "Python" in the hero headline shows a dashed underline
-   hinting it's interactive. On hover, the Python SVG logo fades in.
-
-   Disabled on mobile (see media query at bottom) because:
-   - Touch screens don't hover
-   - The absolute positioning creates an awkward gap on small screens
-================================================================ */
-/* Python hover logo effect */
-.python-hover {
-  position: relative;
-  cursor: none;
-  border-bottom: 1px dashed var(--accent); /* dashed underline hints it's interactive */
-  padding-bottom: 2px;
-  transition: color 0.2s;
-}
-
-.python-logo {
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.python-hover:hover .python-logo {
-  font-size: 0;         /* hides the snake emoji */
-  color: var(--accent); /* word shifts to purple on hover */
-}
-
-.python-hover::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 32px;
-  background-image: url('https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  transition: width 0.3s ease;
-}
-
-.python-hover:hover::after {
-  width: 36px;         
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ================================================================
-   9. SECTION SHARED STYLES
+   7. SECTION SHARED STYLES
    All content sections share these base styles.
    Adjust padding to change vertical spacing between sections.
 ================================================================ */
 section {
   position: relative;
   z-index: 1;
-  padding: 100px 48px;
+  padding: 100px 60px;
   width: 100%;
   max-width: 100%;
+  /* Offsets the anchor jump so section tops aren't hidden under the fixed nav. */
+  scroll-margin-top: 90px;
 }
 
-/* Section label: "About me", "Experience" etc. */
+/* The projects→about gap (a sum of two sections' padding) is kept equal
+   to the about→stack gap (a single margin-top of 100px), so all three
+   "segments" — projects, about, stack — read as evenly spaced. */
+#projects {
+  padding-bottom: 50px;
+}
+#about {
+  padding-top: 50px;
+}
+
+/* Section label: terminal-path style, matches the nav logo/links
+   e.g. "~/projects", "~/about" instead of an all-caps heading. */
 .section-label {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
   color: var(--accent);
-  margin-bottom: 48px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  margin-bottom: 24px;
 }
-
-/* Short decorative line after the label text */
-.section-label::after {
-  content: '';
-  flex: 1;
-  max-width: 80px;
-  height: 1px;
-  background: var(--border);
-}
-
 
 /* ================================================================
-   10. ABOUT SECTION
-   Two-column grid: bio text (left) | tech stack (right).
-   Collapses to one column on mobile.
+   8. ABOUT SECTION
+   Bio text, full width (capped at 810px to match the project rows),
+   with the tech stack as its own labelled subsection below.
 ================================================================ */
-.about-grid {
-  display: grid;
-  grid-template-columns: minmax(300px, 650px) 1fr;
-  gap: 80px;
-  align-items: start;
-  width: 100%;
-  max-width: 100%;
+.about-text {
+  max-width: 1200px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.about-text p + p {
+  margin-top: 16px;
+}
+.about-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.about-text strong {
+  color: var(--text);
+  font-weight: 500;
 }
 
-.about-text { font-size: 15px; line-height: 1.9; color: var(--muted); }
-.about-text p + p  { margin-top: 16px; }
-.about-text a      { color: var(--accent); text-decoration: none; }
-.about-text strong { color: var(--text); font-weight: 500; }
+/* "~/stack" subsection — its own small label, tags span the full
+   section width instead of being squeezed into a sidebar column. */
+.stack-subsection {
+  margin-top: 100px;
+}
+.stack-subsection-label {
+  margin-bottom: 16px;
+  font-size: 12px;
+}
 
-/* Stack list container */
-.stack-list { display: flex; flex-direction: column; gap: 4px; }
-
-/* Individual skill row */
-.stack-item {
+/* Flat, ungrouped tool tags — dotless, one shared accent colour.
+   Each tag is its own pill sized to its content, so it wraps freely
+   instead of fighting a fixed-width row like the old icon rows did. */
+.tool-list {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  transition: border-color 0.2s, background 0.2s;
-  cursor: none;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1200px;
 }
-.stack-item:hover {
+
+.tool-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.tool-tag:hover {
   border-color: var(--accent);
   background: var(--accent-glow);
 }
 
-.stack-name  { font-size: 13px; }
-.stack-level { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
-
-/* Proficiency dots */
-.stack-dots { display: flex; gap: 4px; margin-top: 5px; }
-.dot        { width: 5px; height: 5px; border-radius: 50%; background: var(--border); }
-.dot.filled { background: var(--accent); }
-
-/* Icon row — hidden by default, fades in on hover */
-.stack-icons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-
-.stack-icons img {
-  width: 1.6rem; height: 1.6rem;
+/* Icon greys out until the tag is hovered */
+.tool-icon {
+  width: 1rem;
+  height: 1rem;
   object-fit: contain;
-  filter: brightness(0) invert(0.7);
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter 0.25s ease,
+    opacity 0.25s ease;
+}
+.tool-tag:hover .tool-icon {
+  filter: none;
+  opacity: 1;
 }
 
-.stack-item:hover .stack-icons             { opacity: 1; transform: translateY(0); }
-.stack-item:hover .stack-icons img         { filter: none; } /* full colour on hover */
-
+/* Render's logo is solid black — invert it to white in dark theme so it
+   doesn't disappear against the near-black tag background. */
+:root[data-theme="dark"] .tool-icon.icon-mono {
+  filter: grayscale(1) invert(1);
+}
+:root[data-theme="dark"] .tool-tag:hover .tool-icon.icon-mono {
+  filter: invert(1);
+}
 
 /* ================================================================
-   11. EXPERIENCE SECTION
-   Two-column grid per job: date/company (left) | role + bullets (right).
-   Collapses to single column on mobile.
+   9. PROJECTS SECTION
+   Row-list layout: each project is one clickable <a> row with a
+   divider border, title + tag (left) and year + tech stack (right).
+   Collapses to a stacked layout on mobile (see media query).
 ================================================================ */
-.exp-list {
-  max-width: 100%;
+.project-list {
   display: flex;
   flex-direction: column;
-}
-
-.exp-item {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 32px;
-  padding: 32px 0;
-  border-bottom: 1px solid var(--border);
-}
-.exp-item:first-child { border-top: 1px solid var(--border); }
-
-.exp-meta    { padding-top: 2px; }
-.exp-date    { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 4px; }
-.exp-company { font-size: 12px; color: var(--accent); }
-.exp-role    { font-size: 15px; font-weight: 500; margin-bottom: 12px; }
-
-.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.exp-bullets li {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.7;
-  padding-left: 16px;
-  position: relative;
-}
-
-/* Em dash used as custom bullet marker */
-.exp-bullets li::before {
-  content: '—';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-}
-
-
-/* ================================================================
-   12. PROJECTS SECTION
-   CSS grid of clickable cards. Each card = one <a> tag.
-   Gradient top-border sweeps in on hover.
-================================================================ */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
   width: 100%;
   max-width: 100%;
 }
 
-.project-card {
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px;
-  background: var(--bg2);
-  transition: border-color 0.25s, transform 0.25s, background 0.25s;
-  cursor: none;
-  position: relative;
-  overflow: hidden;
+.project-row {
+  display: block;
+  padding: 28px 0;
   text-decoration: none; /* no underline on the <a> */
-  color: inherit;        /* keep text colours as defined */
+  color: inherit; /* keep text colours as defined */
+  transition: transform 0.2s ease;
 }
 
-/* Gradient line that sweeps in from left on hover */
-.project-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-subtle));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+/* .reveal.visible sets a 0.7s transform transition (for its scroll-in fade).
+   It out-specifies .project-row's 0.2s (2 classes vs 1), so once an element
+   has settled into .reveal.visible, leaving hover used that 0.7s transition
+   instead — the lift went up snappily but came back down sluggishly. Pin
+   the transform transition back to 0.2s at the same specificity so both
+   directions of the hover lift stay snappy. */
+.project-row.reveal.visible {
+  transition:
+    opacity 0.7s ease,
+    transform 0.2s ease;
 }
 
-.project-card:hover {
-  border-color: rgba(196, 181, 253, 0.3);
+/* Hover lifts the whole row (description + tools) together.
+   The extra selector out-specifies `.reveal.visible { transform: none }`,
+   which otherwise ties on specificity and wins by source order. */
+.project-row:hover,
+.project-row.reveal.visible:hover {
   transform: translateY(-4px);
-  background: var(--surface);
 }
-.project-card:hover::before { transform: scaleX(1); }
-
-.project-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
+.project-row:hover .project-row-title {
+  color: var(--accent);
 }
 
-.project-icon       { font-size: 22px; }
-.project-link-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
-.project-title      { font-size: 15px; font-weight: 500; margin-bottom: 10px; }
-.project-desc       { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+/* Single block now — no side-by-side tools column. 810px matches the
+   about-section bio text width, for consistency. */
+.project-row-main {
+  max-width: 1200px;
+}
 
-/* Tech tag chips */
-.project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.project-row-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+
+.project-row-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.project-row-desc strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.project-row-year {
+  display: block;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* Tools, folded into the same block as the description instead of a
+   separate right-hand column. */
+.project-row-stack {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  /* Blending toward black (not --text) darkens correctly in both
+     themes — --text is near-white in dark mode, so mixing toward it
+     would lighten instead of darken there. */
+  color: color-mix(in srgb, var(--muted) 80%, black 20%);
+}
+
+/* Tag pill next to the title */
 .tag {
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -724,13 +914,67 @@ section {
   border: 1px solid var(--border);
   border-radius: 2px;
   color: var(--muted);
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
-.tag:hover { border-color: var(--accent); color: var(--accent); }
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
+/* "All projects →" link below the homepage teaser list */
+.projects-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    gap 0.2s;
+}
+.projects-more:hover {
+  color: var(--accent);
+  gap: 12px;
+}
+
+/* Back-link + page heading, used on projects.html */
+.page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 40px;
+  transition: color 0.2s;
+}
+.page-back:hover {
+  color: var(--accent);
+}
+
+.page-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 56px;
+}
 
 /* ================================================================
-   13. CONTACT SECTION
+   10. CONTACT SECTION
    Large Fraunces heading + description + link buttons.
 ================================================================ */
 .contact-heading {
@@ -740,7 +984,10 @@ section {
   line-height: 1.1;
   margin-bottom: 24px;
 }
-.contact-heading em { font-style: italic; color: var(--accent); }
+.contact-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
 
 .contact-desc {
   color: var(--muted);
@@ -749,22 +996,23 @@ section {
   line-height: 1.8;
 }
 
-.contact-links { display: flex; flex-wrap: wrap; gap: 12px; }
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
 .contact-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 12px 20px;
+  font-size: 13px;
+  padding: 8px 14px;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 999px;
   text-decoration: none;
   color: var(--muted);
   transition: all 0.2s;
-  cursor: none;
 }
 .contact-link:hover {
   border-color: var(--accent);
@@ -772,24 +1020,24 @@ section {
   background: var(--accent-glow);
 }
 
-
 /* ================================================================
-   14. FOOTER
+   11. FOOTER
 ================================================================ */
 footer {
   position: relative;
   z-index: 1;
-  border-top: 1px solid var(--border);
-  padding: 24px 48px;
+  padding: 24px 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-footer span { font-size: 12px; color: var(--muted); }
-
+footer span {
+  font-size: 12px;
+  color: var(--muted);
+}
 
 /* ================================================================
-   15. SCROLL REVEAL
+   12. SCROLL REVEAL
    .reveal starts invisible + shifted down.
    JS adds .visible when element enters viewport.
    CSS transitions handle the animation.
@@ -797,61 +1045,85 @@ footer span { font-size: 12px; color: var(--muted); }
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
 }
 .reveal.visible {
   opacity: 1;
   transform: none;
 }
 
-
 /* ================================================================
-   16. RESPONSIVE — MOBILE  (max-width: 768px)
+   13. RESPONSIVE — MOBILE  (max-width: 768px)
    Everything below 768px width gets these overrides.
 ================================================================ */
 @media (max-width: 768px) {
-
   /* Nav */
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }   /* Hidden — hamburger takes over */
-  .hamburger { display: flex; }   /* Show hamburger button          */
-  .mobile-menu { display: flex; } /* Allow mobile menu to be shown  */
+  nav {
+    padding: 16px 20px;
+  }
+  .nav-links {
+    display: none;
+  } /* Hidden — hamburger takes over */
+  .hamburger {
+    display: flex;
+  } /* Show hamburger button          */
+  .mobile-menu {
+    display: flex;
+  } /* Allow mobile menu to be shown  */
 
   /* Hero */
-  .hero { padding-left: 20px; padding-right: 20px; }
-  .hero h1 { font-size: clamp(32px, 10vw, 52px); line-height: 0.85; }
-  .hero-cta { flex-direction: column; align-items: flex-start; }
-  .hero-scroll-hint { display: none; } /* Not useful on touch */
-
-  /* Disable Python hover — touch screens can't hover,
-     and the absolute positioning creates an awkward gap */
-  .python-hover { border-bottom: none; }
-  .python-hover::after { display: none; }
-  .python-logo { display: none; }
+  .hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 10vw, 52px);
+    line-height: 0.85;
+  }
+  .hero-cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .scroll-cue {
+    display: none;
+  } /* Not useful on touch */
 
   /* Sections */
-  section { padding-left: 20px; padding-right: 20px; }
+  section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 
   /* About */
-  .about-grid { grid-template-columns: 1fr; gap: 48px; max-width: 100%; }
-  .stack-item { flex-wrap: nowrap; gap: 8px; }
-  .stack-item > div:first-child { flex: 1; min-width: 0; } 
-  .stack-name { font-size: 11px; } 
+  .about-text {
+    max-width: 100%;
+  }
+  .stack-subsection {
+    margin-top: 70px;
+  }
+  #projects {
+    padding-bottom: 35px;
+  }
+  #about {
+    padding-top: 35px;
+  }
 
-  /* Experience */
-  .exp-item { grid-template-columns: 1fr; gap: 8px; }
-  .exp-list { max-width: 100%; }
-
-  /* Projects */
-  .projects-grid { grid-template-columns: 1fr; max-width: 100%; }
+  .page-heading {
+    font-size: clamp(28px, 9vw, 40px);
+  }
 
   /* Contact */
-  .contact-links { flex-direction: column; }
+  .contact-links {
+    flex-direction: column;
+  }
 
   /* Footer */
-  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
-
-  /* Disable custom cursor on touch */
-  .cursor, .cursor-ring { display: none; }
-  body { cursor: auto; }
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 24px 20px;
+  }
 }

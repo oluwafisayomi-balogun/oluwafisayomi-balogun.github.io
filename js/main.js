@@ -4,17 +4,50 @@
 
    TABLE OF CONTENTS
    -----------------
+   0.  Preloader
    1.  Scroll to top on load
-   2.  Custom cursor
-   3.  Nav scroll behaviour
-   4.  Hamburger menu (mobile)
-   5.  Typewriter effect
-   6.  Scroll reveal
+   2.  Nav scroll behaviour
+   3.  Hamburger menu (mobile)
+   4.  Theme toggle (light/dark)
+   5.  Scroll reveal
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
    document.getElementById() always finds what it's looking for.
 ================================================================ */
+
+
+/* ================================================================
+   0. PRELOADER
+   Shown on every load, including refresh (no sessionStorage skip —
+   that's the point). Hides once the page has finished loading,
+   with a minimum display time so it doesn't just flash by on fast
+   connections/cache hits.
+================================================================ */
+const preloader = document.getElementById('preloader');
+
+if (preloader) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    preloader.remove();
+  } else {
+    const MIN_DISPLAY_MS = 2450;
+    const shownAt = Date.now();
+
+    const hidePreloader = () => {
+      const remaining = MIN_DISPLAY_MS - (Date.now() - shownAt);
+      setTimeout(() => {
+        preloader.classList.add('is-hidden');
+        preloader.addEventListener('transitionend', () => preloader.remove(), { once: true });
+      }, Math.max(0, remaining));
+    };
+
+    if (document.readyState === 'complete') {
+      hidePreloader();
+    } else {
+      window.addEventListener('load', hidePreloader);
+    }
+  }
+}
 
 
 /* ================================================================
@@ -26,43 +59,7 @@ window.scrollTo(0, 0);
 
 
 /* ================================================================
-   2. CUSTOM CURSOR
-   Replaces the browser cursor with two layered circles.
-
-   mx / my  — actual mouse coordinates
-   rx / ry  — ring's current position (slowly catches up via lerp)
-
-   Lerp (linear interpolation): rx += (target - rx) * speed
-   Lower speed value = more lag on the ring. 0.12 feels good.
-================================================================ */
-const cursor = document.getElementById('cursor');
-const ring   = document.getElementById('cursorRing');
-
-let mx = 0, my = 0;
-let rx = 0, ry = 0;
-
-document.addEventListener('mousemove', (e) => {
-  mx = e.clientX;
-  my = e.clientY;
-});
-
-function animateCursor() {
-  // Dot snaps directly to mouse
-  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
-
-  // Ring lerps toward mouse (0.12 = lag factor; lower = more lag)
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
-
-  requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-
-/* ================================================================
-   3. NAV SCROLL BEHAVIOUR
+   2. NAV SCROLL BEHAVIOUR
    Adds .scrolled to <nav> when user scrolls past 20px.
    CSS uses this class to show the frosted glass background.
 
@@ -78,7 +75,7 @@ window.addEventListener('scroll', () => {
 
 
 /* ================================================================
-   4. HAMBURGER MENU (MOBILE)
+   3. HAMBURGER MENU (MOBILE)
    Toggles the mobile nav menu open/closed.
 
    hamburger button  → gets .open class (bars animate into X)
@@ -106,72 +103,72 @@ mobileMenu.querySelectorAll('a').forEach((link) => {
 
 
 /* ================================================================
-   5. TYPEWRITER EFFECT
-   Types then deletes each phrase in the array, cycling forever.
+   4. THEME TOGGLE (LIGHT/DARK)
+   Sets data-theme="dark" on <html> when active. CSS variables in
+   styles.css read that attribute — see :root[data-theme="dark"].
 
-   TO CHANGE PHRASES: edit the phrases array below.
-   TO CHANGE SPEED:   edit typingSpeed / deleteSpeed / pauseAfterWord.
+   The INITIAL theme (saved choice → OS preference → light) is
+   applied by a small inline script in <head>, before this file
+   loads — that avoids a flash of the wrong theme on page load.
+   This section only handles the click toggle.
 
-   phraseIndex — which phrase we're currently on (0 = first)
-   charIndex   — how many characters are currently visible
-   isDeleting  — true while erasing, false while typing
+   Every element with class "theme-toggle" flips the theme when
+   clicked (there's one in the desktop nav and one in the mobile
+   menu — both stay in sync since they just read/set the same
+   <html> attribute).
 ================================================================ */
-const phrases = [
-  'building data pipelines.',
-  'upskilling.',
-  'automating the boring stuff.',
-  'creating databases.',
-  'vibe-coding.',
-];
+const root = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const typingSpeed    = 65;   // ms per character typed
-const deleteSpeed    = 35;   // ms per character deleted
-const pauseAfterWord = 1800; // ms to pause when full phrase is shown
+document.querySelectorAll('.theme-toggle').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    const applyTheme = () => {
+      root.dataset.theme = next;
+      localStorage.setItem('theme', next);
+    };
 
-let phraseIndex = 0;
-let charIndex   = 0;
-let isDeleting  = false;
+    // Circular reveal that grows from the clicked button.
+    // We wait for transition.ready (the point at which the pseudo-element
+    // tree actually exists) and then drive the clip-path directly via WAAPI
+    // on that pseudo-element. Pre-injecting a @keyframes rule before the
+    // pseudo tree exists lets Chrome's default snapshot-sizing apply first,
+    // which is what made the reveal start from the viewport center instead
+    // of the button in Chrome (Safari happened to not show this).
+    if (!reducedMotion && document.startViewTransition) {
+      const { left, top, width, height } = btn.getBoundingClientRect();
+      const x = left + width / 2;
+      const y = top + height / 2;
+      const endRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
 
-const typewriterEl = document.getElementById('typewriter');
-
-function type() {
-  const currentPhrase = phrases[phraseIndex];
-
-  if (!isDeleting) {
-    // Typing: reveal one more character
-    charIndex++;
-    typewriterEl.textContent = currentPhrase.slice(0, charIndex);
-
-    if (charIndex === currentPhrase.length) {
-      // Full phrase shown — pause then start deleting
-      isDeleting = true;
-      setTimeout(type, pauseAfterWord);
-      return;
+      const transition = document.startViewTransition(applyTheme);
+      transition.ready.then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 500,
+            easing: 'ease',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+      });
+    } else {
+      applyTheme();
     }
-
-  } else {
-    // Deleting: remove one character
-    charIndex--;
-    typewriterEl.textContent = currentPhrase.slice(0, charIndex);
-
-    if (charIndex === 0) {
-      // All deleted — move to next phrase
-      isDeleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-      setTimeout(type, 400);
-      return;
-    }
-  }
-
-  setTimeout(type, isDeleting ? deleteSpeed : typingSpeed);
-}
-
-// Initial delay lets hero animations finish first
-setTimeout(type, 1400);
+  });
+});
 
 
 /* ================================================================
-   6. SCROLL REVEAL
+   5. SCROLL REVEAL
    Watches every .reveal element with IntersectionObserver.
    Adds .visible when the element enters the viewport.
    CSS transitions in styles.css do the actual animation.
@@ -200,3 +197,57 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach((el) => {
   revealObserver.observe(el);
 });
+
+
+/* ================================================================
+   6. FEATURED PROJECTS DRIFT CHECK (homepage only)
+   The homepage's featured project-list is hand-maintained and must
+   always mirror the first N rows of projects.html, in the same order.
+   Nothing else catches it if they fall out of sync, so this fetches
+   projects.html at runtime and compares titles, warning loudly (not
+   just in the console) if they don't match.
+
+   Gated on #projects existing — only index.html has that id.
+   Fails silently on file:// (fetch is blocked cross-file there); it
+   only ever runs for real once the site is actually served over http.
+================================================================ */
+const homepageProjectsSection = document.getElementById('projects');
+if (homepageProjectsSection) {
+  const featuredTitles = Array.from(
+    homepageProjectsSection.querySelectorAll('.project-row-title')
+  ).map((el) => el.textContent.trim());
+
+  fetch('projects.html')
+    .then((res) => res.text())
+    .then((html) => {
+      const fullList = new DOMParser().parseFromString(html, 'text/html');
+      const topTitles = Array.from(
+        fullList.querySelectorAll('.project-row-title')
+      )
+        .slice(0, featuredTitles.length)
+        .map((el) => el.textContent.trim());
+
+      const inSync =
+        featuredTitles.length === topTitles.length &&
+        featuredTitles.every((title, i) => title === topTitles[i]);
+
+      if (!inSync) {
+        console.warn(
+          '[projects out of sync] Homepage featured projects must match ' +
+            'the top of projects.html, in order.\n' +
+            'Homepage:      ' + featuredTitles.join(' | ') + '\n' +
+            'projects.html: ' + topTitles.join(' | ')
+        );
+
+        const banner = document.createElement('div');
+        banner.textContent =
+          '⚠ Featured projects are out of sync with projects.html — see console.';
+        banner.style.cssText =
+          'position:fixed;bottom:0;left:0;right:0;z-index:9999;' +
+          'background:#c0392b;color:#fff;font:14px var(--font-mono, monospace);' +
+          'padding:10px 16px;text-align:center;';
+        document.body.appendChild(banner);
+      }
+    })
+    .catch(() => {});
+}

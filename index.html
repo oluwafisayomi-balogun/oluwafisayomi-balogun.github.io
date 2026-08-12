@@ -3,27 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fisayo Balogun — Backend Developer</title>
-    <meta name="description" content="Fisayo Balogun — self-taught backend developer based in Nigeria. Python, data pipelines, APIs." />
+    <title>Fisayo Balogun · Backend Developer</title>
+    <meta
+      name="description"
+      content="Fisayo Balogun, self-taught backend developer based in Nigeria. Python, data pipelines, APIs."
+    />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <!-- =============================================
-      FONTS
-      Fraunces  → display/headline font (hero, contact heading)
-      DM Mono   → monospace used everywhere else
-      Must stay in <head> so the browser downloads fonts
+      FONT
+      DM Mono → the one typeface used across the whole site.
+      Must stay in <head> so the browser downloads it
       before it reads the stylesheet (avoids flash of wrong font).
     ============================================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
 
     <!-- All styles live in css/styles.css -->
     <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Set the theme before first paint, so there's no flash of the
+         wrong theme while js/main.js (loaded at end of body) runs. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.dataset.theme =
+          saved || (prefersDark ? "dark" : "light");
+      })();
+    </script>
   </head>
 
   <body>
+    <!-- =============================================
+      PRELOADER
+      Full-screen overlay shown on every load/refresh. Faded out
+      and removed by js/main.js once the page has finished loading.
+    ============================================= -->
+    <div class="preloader" id="preloader">
+      <div class="preloader-terminal">
+        <div class="preloader-prompt">
+          <span class="preloader-prompt-symbol">$</span
+          ><span class="preloader-command">whoami</span>
+        </div>
+        <div class="preloader-output preloader-output-name">fisayo</div>
+        <div class="preloader-prompt preloader-prompt-2">
+          <span class="preloader-prompt-symbol">$</span
+          ><span class="preloader-command preloader-command-2">echo $ROLE</span>
+        </div>
+        <div class="preloader-output preloader-output-title">
+          backend developer
+        </div>
+      </div>
+    </div>
 
     <!-- =============================================
       BACKGROUND DECORATIONS
@@ -33,15 +69,6 @@
     <div class="glow-blob glow-blob-1"></div>
     <div class="glow-blob glow-blob-2"></div>
     <div class="glow-blob glow-blob-3"></div>
-
-    <!-- =============================================
-      CUSTOM CURSOR
-      Two layered circles animated by JS.
-      Must live in HTML so JS can find them by ID.
-      Hidden on mobile via CSS (touch screens don't hover).
-    ============================================= -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
 
     <!-- =============================================
       NAVIGATION
@@ -56,10 +83,41 @@
 
       <!-- Desktop nav links (hidden on mobile via CSS) -->
       <div class="nav-links" id="navLinks">
+        <a href="projects.html">/Projects</a>
         <a href="#about">/About</a>
-        <a href="#experience">/Experience</a>
-        <a href="#projects">/Projects</a>
         <a href="#contact">/Contact</a>
+        <a
+          href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
+          target="_blank"
+          >/Résumé</a
+        >
+        <button class="theme-toggle" aria-label="Toggle theme" type="button">
+          <svg
+            class="icon-sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            />
+          </svg>
+          <svg
+            class="icon-moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <span class="theme-toggle-label">Theme</span>
+        </button>
       </div>
 
       <!-- Hamburger button (only visible on mobile via CSS) -->
@@ -70,12 +128,43 @@
       </button>
     </nav>
 
-      <!-- Mobile menu panel — toggled by hamburger button via JS -->
+    <!-- Mobile menu panel — toggled by hamburger button via JS -->
     <div class="mobile-menu" id="mobileMenu">
+      <a href="projects.html">/Projects</a>
       <a href="#about">/About</a>
-      <a href="#experience">/Experience</a>
-      <a href="#projects">/Projects</a>
       <a href="#contact">/Contact</a>
+      <a
+        href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
+        target="_blank"
+        >/Résumé</a
+      >
+      <button class="theme-toggle" aria-label="Toggle theme" type="button">
+        <svg
+          class="icon-sun"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+          />
+        </svg>
+        <svg
+          class="icon-moon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
     </div>
 
     <!-- =============================================
@@ -84,45 +173,136 @@
       Typewriter cycling phrases → edit in js/main.js
     ============================================= -->
     <section class="hero">
+      <!-- Main headline -->
+      <h1>Backend dev.</h1>
 
-      <div class="hero-badge">Upskilling</div>
-
-      <!-- Main headline.
-           <em>           → italic, uses --text colour, smaller size
-           .python-hover  → interactive word (logo pops on hover, desktop only)
-           .purple-word   → the word "purple" in accent colour
-      -->
-      <h1>
-        Backend dev.<br />
-        <em>
-          In love with
-          <span class="python-hover">Python<span class="python-logo"></span></span>
-          (the programming language) and the colour
-          <span class="purple-word">purple</span>.
-        </em>
-      </h1>
-
-      <!-- Sub-paragraph. <span> inside = white highlighted words. -->
+      <!-- Sub-paragraph. <span> inside = highlighted words. -->
       <p class="hero-sub">
-        I'm <span>Fisayo</span>, a self-taught backend developer based in
-        <span>Nigeria</span>. I build
-        <span>scalable APIs, data pipelines,</span> and cloud-deployed systems
-        with Python — the kind of backend that quietly makes everything else
-        work.<br /><br />
-        Currently: <span class="typewriter" id="typewriter"></span>
+        I'm <span>Fisayo</span>, a self-taught Python backend developer with
+        <span>2+ years</span> of experience, based in <span>Nigeria</span>.
       </p>
 
       <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">See my projects</a>
-        <a href="mailto:balogunfisayo23@gmail.com" class="btn btn-ghost">Get in touch</a>
+        <a href="projects.html" class="btn btn-ghost">See my projects</a>
+        <a href="#contact" class="btn btn-ghost">Contact me</a>
       </div>
 
-      <!-- Scroll hint (hidden on mobile) -->
-      <div class="hero-scroll-hint">
-        <div class="scroll-line"></div>
-        Scroll to explore
+      <!-- Scroll cue: bouncing chevron, hidden on mobile -->
+      <div class="scroll-cue" aria-hidden="true">
+        <svg width="26" height="15" viewBox="0 0 26 15" fill="none">
+          <path
+            d="M1 1L13 13L25 1"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <!-- =============================================
+      PROJECTS SECTION (homepage teaser)
+      Row-list of the top 4 most complex/useful projects.
+      Full catalog of all 8 lives on projects.html.
+      Each row is an <a> tag — whole row is clickable.
+      TO ADD A PROJECT: duplicate a .project-row block, and also
+      add it to projects.html so it appears in the full catalog.
+    ============================================= -->
+    <section id="projects">
+      <div class="section-label reveal">~/projects</div>
+
+      <div class="project-list">
+        <a
+          href="https://lagosferries.com/map"
+          target="_blank"
+          class="project-row reveal"
+        >
+          <div class="project-row-main">
+            <div class="project-row-title">
+              Lagos Ferry Map
+            </div>
+            <div class="project-row-desc">
+              The backend and data pipeline behind Lagos's first
+              comprehensive ferry map. A Node/Express/Drizzle API on
+              PostgreSQL powers public-facing crowdsourced submission forms
+              for jetties and routes. A parallel Python toolchain publishes
+              the GTFS feed, syncs route geometry from OSM/GeoJSON sources,
+              and runs automated data-quality checks against the live
+              database.
+            </div>
+            <div class="project-row-stack">
+              Node.js · Express · TypeScript · PostgreSQL · Drizzle ORM · Python (GTFS/OSM pipelines)
+            </div>
+          </div>
+        </a>
+
+        <a
+          href="mailto:balogunfisayo23@gmail.com?subject=Demo%20request%3A%20Sports%20analytics%20pipeline"
+          class="project-row reveal"
+        >
+          <div class="project-row-main">
+            <div class="project-row-title">
+              Sports Analytics Automation Pipeline
+            </div>
+            <div class="project-row-desc">
+              Built for a client, in production since June 2026. A production
+              data pipeline that automates a full sports-analytics workflow.
+              It scrapes live stats from five bot-protected sources, joins
+              them with fuzzy name-matching, and runs a 150-point scoring
+              model, writing ranked results back to Google Sheets. A
+              non-technical client triggers the whole run from a spreadsheet
+              button, turning a multi-hour daily process into a 5-minute
+              one-click run.
+              <strong>Click through to request a live demo.</strong>
+            </div>
+            <div class="project-row-stack">
+              Python · Playwright · pandas · Google Sheets API · GitHub Actions
+            </div>
+          </div>
+        </a>
+
+        <a
+          href="https://github.com/oluwafisayomi-balogun/bet-placer-bc-fun"
+          target="_blank"
+          class="project-row reveal"
+        >
+          <div class="project-row-main">
+            <div class="project-row-title">Sports Bet Automation</div>
+            <div class="project-row-desc">
+              Reverse-engineered an undocumented REST API to place single and
+              combo bets programmatically on bc.game. Implemented JWT auth,
+              input validation, and robust error handling, reducing manual
+              execution to a single function call.
+            </div>
+            <div class="project-row-stack">
+              Python · REST APIs · Chrome DevTools
+            </div>
+          </div>
+        </a>
+
+        <a
+          href="https://t.me/RateFetchBot"
+          target="_blank"
+          class="project-row reveal"
+        >
+          <div class="project-row-main">
+            <div class="project-row-title">Exchange Rate Telegram Bot</div>
+            <div class="project-row-desc">
+              A live Telegram bot that fetches currency exchange rates on demand
+              and sends a daily rate broadcast via an in-process scheduler.
+              Storage swaps automatically between PostgreSQL in production and a
+              local JSON file in development, behind one shared interface.
+            </div>
+            <div class="project-row-stack">
+              Python · aiogram · PostgreSQL · APScheduler · Railway
+            </div>
+          </div>
+        </a>
+
       </div>
 
+      <a href="projects.html" class="projects-more">All projects →</a>
     </section>
 
     <!-- =============================================
@@ -130,278 +310,176 @@
       Two-column grid: bio text (left) | tech stack (right).
       Collapses to one column on mobile.
 
-      SKILL DOTS: 4 filled = Primary, 3 = Strong, 2 = Familiar
       TO ADD A SKILL: duplicate a .stack-item block.
     ============================================= -->
     <section id="about">
-      <div class="section-label reveal">About me</div>
+      <div class="section-label reveal">~/about</div>
 
-      <div class="about-grid">
-
-        <!-- Bio text -->
-        <div class="about-text reveal">
-          <p>
-            I'm <strong>Oluwafisayomi Balogun</strong>, a self-taught backend
-            developer specializing in
-            <strong>Python, data engineering, and process automation</strong>.
-            My background is unconventional — I studied Anatomy at Bowen
-            University, but taught myself to code and never looked back.
-          </p>
-          <p>
-            I care about building systems that
-            <strong>actually work, are reliable, well-structured, and maintainable.</strong>
-          </p>
-          <p>
-            When I'm not writing or learning Python, I'm definitely watching a
-            movie. My midlife-crisis hobby is running. I think I'm a workaholic,
-            although I definitely do not want to be. Most of the time, I try to
-            do things for the plot.
-          </p>
-        </div>
-
-        <!-- Tech stack list -->
-        <div class="reveal">
-          <div class="stack-list">
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">Python</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
-              </div>
-              <span class="stack-level">Primary</span>
-            </div>
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">Django · Flask · FastAPI</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" />
-              </div>
-              <span class="stack-level">Familiar</span>
-            </div>
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">PostgreSQL · SQLite</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" alt="SQLite" />
-              </div>
-              <span class="stack-level">Strong</span>
-            </div>
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">Docker · Cloud Run · AWS S3 · Render</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" alt="GCP" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" />
-              </div>
-              <span class="stack-level">Strong</span>
-            </div>
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">Node.js · JavaScript · Express</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" />
-              </div>
-              <span class="stack-level">Familiar</span>
-            </div>
-
-            <div class="stack-item">
-              <div>
-                <div class="stack-name">Data Engineering · ETL</div>
-                <div class="stack-dots">
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot filled"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-              <div class="stack-icons">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" alt="Pandas" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apacheairflow/apacheairflow-original.svg" alt="Airflow" />
-              </div>
-              <span class="stack-level">Strong</span>
-            </div>
-
-          </div>
-        </div>
+      <!-- Bio text -->
+      <div class="about-text reveal">
+        <p>
+          Hey, I'm Fisayo, <strong>a self-taught</strong> backend developer
+          specializing in Python, data engineering, and process automation. I
+          hold a B.Sc. in Anatomy I've never used.
+        </p>
+        <p>
+          I care about building systems that
+          work, that people actually appreciate, and <strong
+            > that are useful to at least one person.</strong
+          >
+        </p>
+        <p>
+          When I'm not coding or working, I'm probably watching a movie.
+          Running is my midlife-crisis hobby. I'd call myself nonconforming,
+          and I love doing things just for the plot.
+        </p>
+        <p>
+          If you're working on something interesting: civic tech, history,
+          financial literacy, or anything that'll make an impact no matter how
+          tiny I'd love to volunteer.
+        </p>
       </div>
-    </section>
 
-    <!-- =============================================
-      EXPERIENCE SECTION
-      One .exp-item block per job.
-      TO ADD A JOB: duplicate an .exp-item block.
-    ============================================= -->
-    <section id="experience">
-      <div class="section-label reveal">Experience</div>
-
-      <div class="exp-list">
-
-        <div class="exp-item reveal">
-          <div class="exp-meta">
-            <div class="exp-date">Oct 2025 – Present</div>
-            <div class="exp-company">Betting Automate</div>
-          </div>
-          <div class="exp-content">
-            <div class="exp-role">Python Developer · Remote</div>
-            <ul class="exp-bullets">
-              <li>Designed and implemented a production Python comparison engine to identify value bets across bookmakers in real-time.</li>
-              <li>Developed strict odds-matching and validation logic, improving signal accuracy and eliminating false positives.</li>
-              <li>Engineered a system to automatically match identical sporting events across two different data feeds.</li>
-            </ul>
-          </div>
+      <!-- Tech stack subgroup: its own label, full-width wrapped tags.
+           Icon greys out until hovered, no dots/colour-coding —
+           one accent for everything. -->
+      <div class="stack-subsection reveal">
+        <div class="section-label stack-subsection-label">~/stack</div>
+        <div class="tool-list">
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+              alt=""
+            />Python</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg"
+              alt=""
+            />Django</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg"
+              alt=""
+            />Flask</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg"
+              alt=""
+            />FastAPI</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+              alt=""
+            />PostgreSQL</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg"
+              alt=""
+            />SQLite</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+              alt=""
+            />Docker</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg"
+              alt=""
+            />Cloud Run</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
+              alt=""
+            />AWS S3</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon icon-mono"
+              src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/render.svg"
+              alt=""
+            />Render</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/railway/railway-original.svg"
+              alt=""
+            />Railway</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.simpleicons.org/qgis/589632"
+              alt=""
+            />QGIS</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.simpleicons.org/claude/D97757"
+              alt=""
+            />Claude</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg"
+              alt=""
+            />ChatGPT</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+              alt=""
+            />Node.js</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+              alt=""
+            />JavaScript</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+              alt=""
+            />Express</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
+              alt=""
+            />Pandas</span
+          >
+          <span class="tool-tag"
+            ><img
+              class="tool-icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apacheairflow/apacheairflow-original.svg"
+              alt=""
+            />Airflow</span
+          >
         </div>
-
-        <div class="exp-item reveal">
-          <div class="exp-meta">
-            <div class="exp-date">Oct 2025 – Present</div>
-            <div class="exp-company">Public Tech Studio</div>
-          </div>
-          <div class="exp-content">
-            <div class="exp-role">Data Associate · Georgia, USA</div>
-            <ul class="exp-bullets">
-              <li>Designed a relational database schema and integrated APIs to ingest crowd-sourced transport data, supporting 100+ active submissions with full referential integrity.</li>
-              <li>Automated data collection and processing pipelines for public transit data, reducing manual data handling by over 99%.</li>
-              <li>Containerized data workflows with Docker and deployed to Google Cloud Platform via Cloud Run.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="exp-item reveal">
-          <div class="exp-meta">
-            <div class="exp-date">Feb 2024 – Oct 2025</div>
-            <div class="exp-company">Stears</div>
-          </div>
-          <div class="exp-content">
-            <div class="exp-role">Data Research Analyst · Lagos, NG</div>
-            <ul class="exp-bullets">
-              <li>Engineered a GPT-based AI pipeline for automated content summarization integrating RSS feeds, web search, and Google Docs API — cutting processing time by 85%.</li>
-              <li>Automated election data workflows from collection to processing using Python, reducing manual data entry by over 80%.</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =============================================
-      PROJECTS SECTION
-      Each card is an <a> tag — whole card is clickable.
-      No nested <a> tags inside (invalid HTML).
-      TO ADD A PROJECT: duplicate a project-card <a> block.
-    ============================================= -->
-    <section id="projects">
-      <div class="section-label reveal">Selected projects</div>
-
-      <div class="projects-grid">
-
-        <a href="https://github.com/oluwafisayomi-balogun/bet-placer-bc-fun" target="_blank" class="project-card reveal">
-          <div class="project-top">
-            <span class="project-icon">🔁</span>
-            <span class="project-link-label">GitHub ↗</span>
-          </div>
-          <div class="project-title">Sports Bet Automation</div>
-          <div class="project-desc">
-            Reverse-engineered an undocumented REST API to place single and combo bets
-            programmatically. Implemented JWT auth, input validation, and robust error
-            handling — reducing manual execution to a single function call.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">REST APIs</span>
-            <span class="tag">Chrome DevTools</span>
-          </div>
-        </a>
-
-        <a href="https://drive.google.com/drive/folders/1CJMrGxNYlJ18tThowKHMcKSCW1wHNiRF?usp=sharing/" target="_blank" class="project-card reveal">
-          <div class="project-top">
-            <span class="project-icon">☁️</span>
-            <span class="project-link-label">Drive ↗</span>
-          </div>
-          <div class="project-title">Web Scraping & Data Pipeline</div>
-          <div class="project-desc">
-            Automated web scraping from a login-protected site using Selenium.
-            Processed data with Pandas and stored to AWS S3 via boto3 — fully
-            hands-off, cloud-synced output.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">Selenium</span>
-            <span class="tag">Pandas</span>
-            <span class="tag">AWS S3</span>
-          </div>
-        </a>
-
-        <a href="https://weather-fetcher-4yrl.onrender.com/" target="_blank" class="project-card reveal">
-          <div class="project-top">
-            <span class="project-icon">🌦️</span>
-            <span class="project-link-label">Live ↗</span>
-          </div>
-          <div class="project-title">Weather Fetcher API</div>
-          <div class="project-desc">
-            Flask backend that chains multiple third-party API calls to convert city
-            names into real-time weather insights. Securely manages API keys with env
-            vars and deployed to Render.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">Flask</span>
-            <span class="tag">REST APIs</span>
-            <span class="tag">Render</span>
-          </div>
-        </a>
-
       </div>
     </section>
 
@@ -411,19 +489,39 @@
     ============================================= -->
     <section id="contact">
       <div class="contact-inner reveal">
-        <div class="contact-heading">
-          Let's build<br /><em>something good.</em>
-        </div>
+        <div class="contact-heading">Reach out to me</div>
         <p class="contact-desc">
-          Open to freelance projects and interesting conversations. If you're
-          building something that needs a reliable backend — reach out. I'm always
-          happy to talk Python, movies, or just ideas.
+          If you're building something that you think I'll be interested in, do
+          reach out.
         </p>
         <div class="contact-links">
-          <a href="mailto:balogunfisayo23@gmail.com" class="contact-link">✉ Email</a>
-          <a href="https://github.com/oluwafisayomi-balogun" target="_blank" class="contact-link">↗ GitHub</a>
-          <a href="https://www.linkedin.com/in/oluwafisayomi-balogun/" target="_blank" class="contact-link">↗ LinkedIn</a>
-          <a href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing" target="_blank" class="contact-link">↗ Resume</a>
+          <a href="mailto:balogunfisayo23@gmail.com" class="contact-link"
+            >✉ Email</a
+          >
+          <a
+            href="https://github.com/oluwafisayomi-balogun"
+            target="_blank"
+            class="contact-link"
+            >↗ GitHub</a
+          >
+          <a
+            href="https://www.linkedin.com/in/oluwafisayomi-balogun/"
+            target="_blank"
+            class="contact-link"
+            >↗ LinkedIn</a
+          >
+          <a
+            href="https://www.upwork.com/freelancers/oluwafisayomib"
+            target="_blank"
+            class="contact-link"
+            >↗ Upwork</a
+          >
+          <a
+            href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
+            target="_blank"
+            class="contact-link"
+            >↗ Résumé</a
+          >
         </div>
       </div>
     </section>
@@ -434,13 +532,10 @@
     ============================================= -->
     <footer>
       <span>© 2026 Oluwafisayomi Balogun</span>
-      <span>Designed &amp; built by me (fully vibe-coded. hehe)</span>
-      <span>Built with HTML · CSS · Vanilla JS</span>
     </footer>
 
     <!-- Script at end of <body> so all HTML elements
          exist before JS tries to query them. -->
     <script src="js/main.js"></script>
-
   </body>
 </html>
