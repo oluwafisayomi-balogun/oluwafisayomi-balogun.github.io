@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "serve", "-l", "8199", "."],
       "port": 8199
+    },
+    {
+      "name": "baseline",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "-l", "8935", "../baseline"],
+      "port": 8935
     }
   ]
 }
