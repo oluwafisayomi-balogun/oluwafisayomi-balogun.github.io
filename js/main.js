@@ -19,15 +19,22 @@
 
 /* ================================================================
    0. PRELOADER
-   Shown on every load, including refresh (no sessionStorage skip —
-   that's the point). Hides once the page has finished loading,
-   with a minimum display time so it doesn't just flash by on fast
-   connections/cache hits.
+   Shown on a hard reload, and on the very first page load of a
+   browsing session — not on every internal link click between
+   pages (e.g. /projects -> /#about), which would replay it
+   annoyingly on ordinary site navigation.
 ================================================================ */
 const preloader = document.getElementById('preloader');
 
 if (preloader) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const navEntry = performance.getEntriesByType('navigation')[0];
+  const isReload = navEntry ? navEntry.type === 'reload' : false;
+  const hasVisited = sessionStorage.getItem('hasVisited') === '1';
+  sessionStorage.setItem('hasVisited', '1');
+
+  if (!isReload && hasVisited) {
+    preloader.remove();
+  } else if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     preloader.remove();
   } else {
     const MIN_DISPLAY_MS = 2450;
@@ -56,6 +63,17 @@ if (preloader) {
    Browsers sometimes remember scroll position — this overrides that.
 ================================================================ */
 window.scrollTo(0, 0);
+
+/* On the homepage, clicking the logo should just scroll to top —
+   not navigate to "/" again (full reload) or leave a stray "#"
+   in the URL. */
+const navLogo = document.querySelector('.nav-logo');
+if (navLogo && (location.pathname === '/' || location.pathname === '/index.html')) {
+  navLogo.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 
 /* ================================================================
