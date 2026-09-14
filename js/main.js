@@ -202,10 +202,10 @@ document.querySelectorAll('.reveal').forEach((el) => {
 /* ================================================================
    6. FEATURED PROJECTS DRIFT CHECK (homepage only)
    The homepage's featured project-list is hand-maintained and must
-   always mirror the first N rows of projects.html, in the same order.
-   Nothing else catches it if they fall out of sync, so this fetches
-   projects.html at runtime and compares titles, warning loudly (not
-   just in the console) if they don't match.
+   always mirror the first N rows of projects/index.html, in the same
+   order. Nothing else catches it if they fall out of sync, so this
+   fetches /projects at runtime and compares titles, warning loudly
+   (not just in the console) if they don't match.
 
    Gated on #projects existing — only index.html has that id.
    Fails silently on file:// (fetch is blocked cross-file there); it
@@ -217,7 +217,7 @@ if (homepageProjectsSection) {
     homepageProjectsSection.querySelectorAll('.project-row-title')
   ).map((el) => el.textContent.trim());
 
-  fetch('projects.html')
+  fetch('/projects')
     .then((res) => res.text())
     .then((html) => {
       const fullList = new DOMParser().parseFromString(html, 'text/html');
@@ -234,14 +234,14 @@ if (homepageProjectsSection) {
       if (!inSync) {
         console.warn(
           '[projects out of sync] Homepage featured projects must match ' +
-            'the top of projects.html, in order.\n' +
-            'Homepage:      ' + featuredTitles.join(' | ') + '\n' +
-            'projects.html: ' + topTitles.join(' | ')
+            'the top of /projects, in order.\n' +
+            'Homepage: ' + featuredTitles.join(' | ') + '\n' +
+            '/projects: ' + topTitles.join(' | ')
         );
 
         const banner = document.createElement('div');
         banner.textContent =
-          '⚠ Featured projects are out of sync with projects.html — see console.';
+          '⚠ Featured projects are out of sync with /projects — see console.';
         banner.style.cssText =
           'position:fixed;bottom:0;left:0;right:0;z-index:9999;' +
           'background:#c0392b;color:#fff;font:14px var(--font-mono, monospace);' +
