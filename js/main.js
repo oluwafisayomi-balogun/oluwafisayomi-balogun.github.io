@@ -10,6 +10,7 @@
    3.  Hamburger menu (mobile)
    4.  Theme toggle (light/dark)
    5.  Scroll reveal
+   6.  Live chess.com rating
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -269,3 +270,43 @@ if (homepageProjectsSection) {
     })
     .catch(() => {});
 }
+
+
+/* ================================================================
+   6. LIVE CHESS.COM RATING
+   Public chess.com API, no auth. Shows the highest of the player's
+   rapid/blitz/bullet ratings. Cached in localStorage for an hour.
+   If the request fails, the "pulled live" clause is removed so the
+   sentence still reads naturally.
+================================================================ */
+(function () {
+  var el = document.getElementById('chess-elo');
+  if (!el) return;
+
+  var USER = 'fisayo1123';
+  var KEY = 'chess-elo';
+  var TTL = 60 * 60 * 1000;
+
+  try {
+    var c = JSON.parse(localStorage.getItem(KEY));
+    if (c && Date.now() - c.t < TTL) { el.textContent = c.v; return; }
+  } catch (e) {}
+
+  fetch('https://api.chess.com/pub/player/' + USER + '/stats')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      var best = null;
+      ['chess_rapid', 'chess_blitz', 'chess_bullet'].forEach(function (m) {
+        var r = d[m] && d[m].last && d[m].last.rating;
+        if (r && (!best || r > best.r)) best = { r: r, m: m.replace('chess_', '') };
+      });
+      if (!best) throw new Error('no rating');
+      var v = best.r + ' (' + best.m + ')';
+      el.textContent = v;
+      try { localStorage.setItem(KEY, JSON.stringify({ v: v, t: Date.now() })); } catch (e) {}
+    })
+    .catch(function () {
+      var live = document.getElementById('chess-live');
+      if (live) live.remove();
+    });
+})();

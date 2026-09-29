@@ -24,10 +24,10 @@
    Edit values here and the whole site updates automatically.
 ================================================================ */
 :root {
-  /* Brand Accent — muted purple, used sparingly */
-  --accent: #6d4fc2; /* Primary purple: highlights, links, active states */
-  --accent-strong: #54399e; /* Deeper purple: hover states, emphasis            */
-  --accent-subtle: #ede8fa; /* Pale tint: glow rings, tints                     */
+  /* Brand Accent — burnt orange, used sparingly */
+  --accent: #bf4e0a; /* Primary orange: highlights, links, active states */
+  --accent-strong: #963b05; /* Deeper orange: hover states, emphasis            */
+  --accent-subtle: #fbeadd; /* Pale tint: glow rings, tints                     */
 
   /* Light Base — warm paper */
   --bg: #faf9f6; /* Page background                                 */
@@ -39,9 +39,9 @@
 
   /* Utility */
   --accent-glow: rgba(
-    109,
-    79,
-    194,
+    191,
+    78,
+    10,
     0.06
   ); /* Transparent tint for hover bg    */
 
@@ -54,9 +54,9 @@
 /* Dark theme — activated via [data-theme="dark"] on <html>, set by js/main.js.
    Same variable names, dark values. Everything downstream just works. */
 :root[data-theme="dark"] {
-  --accent: #8b6fe0;
-  --accent-strong: #a489f0;
-  --accent-subtle: #2a2340;
+  --accent: #e8743b;
+  --accent-strong: #f59a68;
+  --accent-subtle: #3a2214;
 
   --bg: #0a0a0a;
   --bg2: #141414;
@@ -65,7 +65,7 @@
   --muted: #9a98a0;
   --border: #2a2a2a;
 
-  --accent-glow: rgba(139, 111, 224, 0.12);
+  --accent-glow: rgba(232, 116, 59, 0.12);
 }
 
 /* Theme toggle transition — the new theme reveals outward as a circle
@@ -250,7 +250,7 @@ body {
    body::after  — faint chessboard, fading toward the edges
    Both use pointer-events: none so they never block clicks.
 
-   .glow-blob — blurred circles creating the ambient purple glow.
+   .glow-blob — blurred circles creating the ambient orange glow.
    position: fixed so they stay put while you scroll.
 ================================================================ */
 body::before {
@@ -267,15 +267,18 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
+  margin: auto;
+  width: 100vmin;
+  height: 100vmin;
   background-image: conic-gradient(
     color-mix(in srgb, var(--accent) 5%, transparent) 25%,
     transparent 0 50%,
     color-mix(in srgb, var(--accent) 5%, transparent) 0 75%,
     transparent 0
   );
-  background-size: 160px 160px;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 100%);
+  background-size: 25% 25%;
+  -webkit-mask-image: radial-gradient(circle at center, #000 45%, transparent 100%);
+  mask-image: radial-gradient(circle at center, #000 45%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -608,6 +611,14 @@ nav.scrolled {
   color: var(--text);
 }
 
+/* Live chess.com rating link (About section) */
+.chess-elo {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* CTA button row */
 .hero-cta {
   display: flex;
@@ -631,7 +642,7 @@ nav.scrolled {
     border-color 0.2s ease;
 }
 
-/* Outline pill — ink border + text, fills purple on hover */
+/* Outline pill — ink border + text, fills orange on hover */
 .btn-ghost {
   border-color: var(--text);
   color: var(--text);
