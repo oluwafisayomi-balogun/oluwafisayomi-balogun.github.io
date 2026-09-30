@@ -24,10 +24,14 @@
    Edit values here and the whole site updates automatically.
 ================================================================ */
 :root {
-  /* Brand Accent — burnt orange, used sparingly */
-  --accent: #bf4e0a; /* Primary orange: highlights, links, active states */
-  --accent-strong: #963b05; /* Deeper orange: hover states, emphasis            */
-  --accent-subtle: #fbeadd; /* Pale tint: glow rings, tints                     */
+  /* Brand Accent — monochrome: the accent is the ink colour itself */
+  --accent: #1c1b1f; /* Ink: links, active states */
+  --accent-strong: #000000; /* Pure black: emphasis            */
+  --accent-subtle: #ebe8e1; /* Pale grey tint: glow rings, tints                     */
+
+  /* Highlight — burnt orange, ONLY for hovers and underlines */
+  --highlight: #bf4e0a;
+  --highlight-glow: rgba(191, 78, 10, 0.08);
 
   /* Light Base — warm paper */
   --bg: #faf9f6; /* Page background                                 */
@@ -39,10 +43,10 @@
 
   /* Utility */
   --accent-glow: rgba(
-    191,
-    78,
-    10,
-    0.06
+    28,
+    27,
+    31,
+    0.05
   ); /* Transparent tint for hover bg    */
 
   /* Typography — one typeface everywhere */
@@ -54,9 +58,12 @@
 /* Dark theme — activated via [data-theme="dark"] on <html>, set by js/main.js.
    Same variable names, dark values. Everything downstream just works. */
 :root[data-theme="dark"] {
-  --accent: #e8743b;
-  --accent-strong: #f59a68;
-  --accent-subtle: #3a2214;
+  --accent: #f2f1ed;
+  --accent-strong: #ffffff;
+  --accent-subtle: #1f1f1f;
+
+  --highlight: #e8743b;
+  --highlight-glow: rgba(232, 116, 59, 0.12);
 
   --bg: #0a0a0a;
   --bg2: #141414;
@@ -65,7 +72,31 @@
   --muted: #9a98a0;
   --border: #2a2a2a;
 
-  --accent-glow: rgba(232, 116, 59, 0.12);
+  --accent-glow: rgba(242, 241, 237, 0.08);
+}
+
+/* Dark theme: body copy sits a step below full brightness so the medium-
+   weight <strong> words (which stay at --text) actually stand out. On dark
+   backgrounds a weight bump alone is too subtle. */
+:root[data-theme="dark"] .hero-sub,
+:root[data-theme="dark"] .about-text,
+:root[data-theme="dark"] .project-row-desc,
+:root[data-theme="dark"] .contact-desc,
+:root[data-theme="dark"] .page-sub {
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+}
+:root[data-theme="dark"] .hero-sub strong,
+:root[data-theme="dark"] .about-text strong,
+:root[data-theme="dark"] .project-row-desc strong {
+  color: var(--text);
+}
+
+/* Keyboard focus — visible on every interactive element. :focus-visible
+   means mouse clicks don't trigger it. */
+:focus-visible {
+  outline: 2px solid var(--highlight);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 /* Theme toggle transition — the new theme reveals outward as a circle
@@ -238,7 +269,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.7;
   overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
@@ -250,7 +281,7 @@ body {
    body::after  — faint chessboard, fading toward the edges
    Both use pointer-events: none so they never block clicks.
 
-   .glow-blob — blurred circles creating the ambient orange glow.
+   .glow-blob — blurred circles creating the ambient grey glow.
    position: fixed so they stay put while you scroll.
 ================================================================ */
 body::before {
@@ -373,15 +404,19 @@ nav.scrolled {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--accent);
+  background: var(--highlight);
   transition: width 0.25s ease;
 }
 
 .nav-links a:hover {
   color: var(--text);
 }
-.nav-links a:hover::after {
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after {
   width: 100%;
+}
+.nav-links a[aria-current="page"] {
+  color: var(--text);
 }
 
 /* Theme toggle — sun/moon icon button, sits at the end of the nav links */
@@ -478,11 +513,18 @@ nav.scrolled {
 
   /* Slide down animation */
   transform: translateY(-100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden; /* closed links must not be reachable by Tab */
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.35s; /* hide only after the slide-up finishes */
 }
 
 .mobile-menu.open {
   transform: translateY(0);
+  visibility: visible;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s;
 }
 
 .mobile-menu a {
@@ -500,8 +542,12 @@ nav.scrolled {
     padding-left 0.2s;
 }
 
+.mobile-menu a[aria-current="page"] {
+  color: var(--text);
+}
+
 .mobile-menu a:hover {
-  color: var(--accent);
+  color: var(--highlight);
   padding-left: 8px;
 }
 
@@ -523,7 +569,7 @@ nav.scrolled {
     padding-left 0.2s;
 }
 .mobile-menu .theme-toggle:hover {
-  color: var(--accent);
+  color: var(--highlight);
   padding-left: 8px;
 }
 .mobile-menu .theme-toggle svg {
@@ -543,45 +589,11 @@ nav.scrolled {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  min-height: 100svh; /* excludes mobile browser bars; ignored where unsupported */
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 60px;
-}
-
-/* Pulsing availability badge */
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 32px;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.2s forwards;
-}
-
-.hero-badge::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.7);
-  }
 }
 
 /* Main headline */
@@ -589,7 +601,7 @@ nav.scrolled {
   font-family: var(--font-display);
   font-size: clamp(36px, 5.5vw, 72px);
   font-weight: 300;
-  line-height: 0.75;
+  line-height: 1;
   letter-spacing: -0.02em;
   margin-bottom: 28px;
   opacity: 0;
@@ -598,25 +610,32 @@ nav.scrolled {
 
 /* Sub-paragraph */
 .hero-sub {
-  font-size: 15px;
-  color: var(--muted);
+  font-size: 16px;
+  color: var(--text);
   line-height: 1.9;
   margin-bottom: 48px;
   opacity: 0;
   animation: fadeUp 0.8s 0.5s forwards;
 }
 
-/* <span> inside hero-sub = highlighted words */
-.hero-sub span {
+/* <strong> inside hero-sub = emphasised words (medium, the heaviest
+   weight DM Mono ships) */
+.hero-sub strong {
   color: var(--text);
+  font-weight: 500;
 }
 
 /* Live chess.com rating link (About section) */
 .chess-elo {
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: underline;
+  text-decoration-color: var(--highlight);
   text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.chess-elo:hover {
+  color: var(--highlight);
 }
 
 /* CTA button row */
@@ -642,7 +661,7 @@ nav.scrolled {
     border-color 0.2s ease;
 }
 
-/* Outline pill — ink border + text, fills orange on hover */
+/* Outline pill — ink border + text, fills ink on hover */
 .btn-ghost {
   border-color: var(--text);
   color: var(--text);
@@ -650,7 +669,7 @@ nav.scrolled {
 .btn-ghost:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: #ffffff;
+  color: var(--bg);
 }
 
 /* Scroll cue: bouncing chevron, centered on the viewport's vertical midline.
@@ -740,21 +759,17 @@ section {
 
 /* ================================================================
    8. ABOUT SECTION
-   Bio text, full width (capped at 810px to match the project rows),
+   Bio text (capped at 1200px, same as the project rows),
    with the tech stack as its own labelled subsection below.
 ================================================================ */
 .about-text {
   max-width: 1200px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.7;
-  color: var(--muted);
+  color: var(--text);
 }
 .about-text p + p {
   margin-top: 16px;
-}
-.about-text a {
-  color: var(--accent);
-  text-decoration: none;
 }
 .about-text strong {
   color: var(--text);
@@ -768,7 +783,6 @@ section {
 }
 .stack-subsection-label {
   margin-bottom: 16px;
-  font-size: 12px;
 }
 
 /* Flat, ungrouped tool tags — dotless, one shared accent colour.
@@ -795,8 +809,8 @@ section {
     background 0.2s;
 }
 .tool-tag:hover {
-  border-color: var(--accent);
-  background: var(--accent-glow);
+  border-color: var(--highlight);
+  background: var(--highlight-glow);
 }
 
 /* Icon greys out until the tag is hovered */
@@ -824,11 +838,23 @@ section {
   filter: invert(1);
 }
 
+/* Same problem for other logos drawn in black or very dark colours
+   (Django, Flask, Express, Pandas, ChatGPT, AWS). Inverted to light grey
+   in dark theme; they stay monochrome on hover since inverting a coloured
+   logo would produce odd colours. */
+:root[data-theme="dark"] .tool-icon.icon-dark {
+  filter: grayscale(1) invert(1);
+}
+:root[data-theme="dark"] .tool-tag:hover .tool-icon.icon-dark {
+  filter: grayscale(1) invert(1);
+  opacity: 1;
+}
+
 /* ================================================================
    9. PROJECTS SECTION
-   Row-list layout: each project is one clickable <a> row with a
-   divider border, title + tag (left) and year + tech stack (right).
-   Collapses to a stacked layout on mobile (see media query).
+   Row-list layout: each project is one clickable <a> row with
+   title, description and tech stack stacked in a single column.
+   Same layout on desktop and mobile.
 ================================================================ */
 .project-list {
   display: flex;
@@ -840,36 +866,40 @@ section {
 .project-row {
   display: block;
   padding: 28px 0;
+  border-top: 1px solid var(--border);
   text-decoration: none; /* no underline on the <a> */
   color: inherit; /* keep text colours as defined */
   transition: transform 0.2s ease;
 }
 
-/* .reveal.visible sets a 0.7s transform transition (for its scroll-in fade).
+/* .js .reveal.visible sets a 0.7s transform transition (for its scroll-in fade).
    It out-specifies .project-row's 0.2s (2 classes vs 1), so once an element
    has settled into .reveal.visible, leaving hover used that 0.7s transition
    instead — the lift went up snappily but came back down sluggishly. Pin
    the transform transition back to 0.2s at the same specificity so both
    directions of the hover lift stay snappy. */
-.project-row.reveal.visible {
+.js .project-row.reveal.visible {
   transition:
     opacity 0.7s ease,
     transform 0.2s ease;
 }
 
 /* Hover lifts the whole row (description + tools) together.
-   The extra selector out-specifies `.reveal.visible { transform: none }`,
+   The extra selector out-specifies `.js .reveal.visible { transform: none }`,
    which otherwise ties on specificity and wins by source order. */
+.project-row:last-child {
+  border-bottom: 1px solid var(--border);
+}
 .project-row:hover,
-.project-row.reveal.visible:hover {
+.js .project-row.reveal.visible:hover {
   transform: translateY(-4px);
 }
 .project-row:hover .project-row-title {
-  color: var(--accent);
+  color: var(--highlight);
 }
 
-/* Single block now — no side-by-side tools column. 810px matches the
-   about-section bio text width, for consistency. */
+/* Single block — no side-by-side tools column. Same 1200px cap as the
+   about-section bio text, for consistency. */
 .project-row-main {
   max-width: 1200px;
 }
@@ -885,9 +915,30 @@ section {
   transition: color 0.2s;
 }
 
-.project-row-desc {
-  font-size: 14px;
+.project-row-title::after {
+  content: "↗";
+  font-weight: 400;
   color: var(--muted);
+  transition: color 0.2s;
+}
+.project-row:hover .project-row-title::after {
+  color: var(--highlight);
+}
+
+/* The demo row opens an email, so it gets a mail icon instead of ↗.
+   Drawn as a mask so it inherits the arrow's colour and hover state. */
+.project-row--mail .project-row-title::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='4' width='20' height='16' rx='2'/%3E%3Cpath d='m22 7-10 6L2 7'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='4' width='20' height='16' rx='2'/%3E%3Cpath d='m22 7-10 6L2 7'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.project-row-desc {
+  font-size: 15px;
+  color: var(--text);
   line-height: 1.7;
 }
 .project-row-desc strong {
@@ -895,41 +946,15 @@ section {
   font-weight: 500;
 }
 
-.project-row-year {
-  display: block;
-  font-size: 13px;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-/* Tools, folded into the same block as the description instead of a
-   separate right-hand column. */
+/* Tech stack line, under the description. */
 .project-row-stack {
   display: block;
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 13px;
   /* Blending toward black (not --text) darkens correctly in both
      themes — --text is near-white in dark mode, so mixing toward it
      would lighten instead of darken there. */
   color: color-mix(in srgb, var(--muted) 80%, black 20%);
-}
-
-/* Tag pill next to the title */
-.tag {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--muted);
-  transition:
-    border-color 0.2s,
-    color 0.2s;
-}
-.tag:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 /* "All projects →" link below the homepage teaser list */
@@ -939,7 +964,7 @@ section {
   gap: 8px;
   margin-top: 12px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.05em;
   color: var(--muted);
   text-decoration: none;
@@ -948,7 +973,7 @@ section {
     gap 0.2s;
 }
 .projects-more:hover {
-  color: var(--accent);
+  color: var(--highlight);
   gap: 12px;
 }
 
@@ -964,7 +989,7 @@ section {
   transition: color 0.2s;
 }
 .page-back:hover {
-  color: var(--accent);
+  color: var(--highlight);
 }
 
 .page-heading {
@@ -976,33 +1001,40 @@ section {
 }
 
 .page-sub {
-  font-size: 14px;
-  color: var(--muted);
+  font-size: 15px;
+  color: var(--text);
   line-height: 1.8;
   margin-bottom: 56px;
 }
 
 /* ================================================================
    10. CONTACT SECTION
-   Large Fraunces heading + description + link buttons.
+   Heading + description + link buttons.
 ================================================================ */
 .contact-heading {
   font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(28px, 3.5vw, 40px);
   font-weight: 300;
   line-height: 1.1;
   margin-bottom: 24px;
 }
-.contact-heading em {
-  font-style: italic;
-  color: var(--accent);
-}
 
 .contact-desc {
-  color: var(--muted);
-  font-size: 14px;
+  color: var(--text);
+  font-size: 15px;
   margin-bottom: 40px;
   line-height: 1.8;
+}
+
+.contact-email {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--highlight);
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.contact-email:hover {
+  color: var(--highlight);
 }
 
 .contact-links {
@@ -1024,9 +1056,9 @@ section {
   transition: all 0.2s;
 }
 .contact-link:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-glow);
+  border-color: var(--highlight);
+  color: var(--highlight);
+  background: var(--highlight-glow);
 }
 
 /* ================================================================
@@ -1047,20 +1079,50 @@ footer span {
 
 /* ================================================================
    12. SCROLL REVEAL
-   .reveal starts invisible + shifted down.
+   .reveal starts invisible + shifted down, but only when JS is running
+   (the inline <head> script adds .js to <html>), so content is never
+   stuck hidden if JS fails.
    JS adds .visible when element enters viewport.
    CSS transitions handle the animation.
 ================================================================ */
-.reveal {
+.js .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition:
     opacity 0.7s ease,
     transform 0.7s ease;
 }
-.reveal.visible {
+.js .reveal.visible {
   opacity: 1;
   transform: none;
+}
+
+/* Reduced motion — for visitors who've asked their device for less motion:
+   no entrance animations, chevron bounce, hover lift or smooth scrolling.
+   Elements that start at opacity:0 are forced visible. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero h1,
+  .hero-sub,
+  .hero-cta,
+  .scroll-cue {
+    animation: none;
+    opacity: 1;
+  }
+  .scroll-cue svg {
+    animation: none;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .project-row:hover,
+  .js .project-row.reveal.visible:hover {
+    transform: none;
+  }
 }
 
 /* ================================================================
@@ -1089,7 +1151,7 @@ footer span {
   }
   .hero h1 {
     font-size: clamp(32px, 10vw, 52px);
-    line-height: 0.85;
+    line-height: 1;
   }
   .hero-cta {
     flex-direction: column;
@@ -1124,7 +1186,18 @@ footer span {
   }
 
   /* Contact */
-  .contact-links {
+  .contact-email {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--highlight);
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.contact-email:hover {
+  color: var(--highlight);
+}
+
+.contact-links {
     flex-direction: column;
   }
 

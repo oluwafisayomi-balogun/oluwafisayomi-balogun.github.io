@@ -3,10 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fisayo Balogun · Backend Developer</title>
+    <title>Oluwafisayomi Balogun · Backend Developer</title>
     <meta
       name="description"
-      content="Fisayo Balogun, self-taught backend developer based in Nigeria. Python, data pipelines, APIs."
+      content="Oluwafisayomi Balogun, self-taught backend developer based in Nigeria. Python, data pipelines, APIs."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Oluwafisayomi Balogun" />
+    <meta property="og:title" content="Oluwafisayomi Balogun · Backend Developer" />
+    <meta
+      property="og:description"
+      content="Self-taught backend developer based in Nigeria. Python, data pipelines, APIs."
+    />
+    <meta property="og:url" content="https://fisayo.dev/" />
+    <meta property="og:image" content="https://fisayo.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Oluwafisayomi Balogun's portfolio homepage: Backend dev."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fisayo.dev/og-image.png" />
+    <meta name="twitter:title" content="Oluwafisayomi Balogun · Backend Developer" />
+    <meta
+      name="twitter:description"
+      content="Self-taught backend developer based in Nigeria. Python, data pipelines, APIs."
     />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <!-- =============================================
@@ -29,6 +51,7 @@
          wrong theme while js/main.js (loaded at end of body) runs. -->
     <script>
       (function () {
+        document.documentElement.classList.add("js");
         var saved = localStorage.getItem("theme");
         var prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)",
@@ -64,7 +87,7 @@
 
     <!-- =============================================
       BACKGROUND DECORATIONS
-      Blurred orange blobs for ambient glow atmosphere.
+      Blurred grey blobs for ambient glow atmosphere.
       Pure visual — no content. Positioned via CSS.
     ============================================= -->
     <div class="glow-blob glow-blob-1"></div>
@@ -88,8 +111,8 @@
         <a href="#about">/About</a>
         <a href="#contact">/Contact</a>
         <a
-          href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
-          target="_blank"
+          href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/view"
+          target="_blank" rel="noopener"
           >/Résumé</a
         >
         <button class="theme-toggle" aria-label="Toggle theme" type="button">
@@ -122,7 +145,7 @@
       </div>
 
       <!-- Hamburger button (only visible on mobile via CSS) -->
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span>
         <span></span>
         <span></span>
@@ -135,8 +158,8 @@
       <a href="#about">/About</a>
       <a href="#contact">/Contact</a>
       <a
-        href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
-        target="_blank"
+        href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/view"
+        target="_blank" rel="noopener"
         >/Résumé</a
       >
       <button class="theme-toggle" aria-label="Toggle theme" type="button">
@@ -171,17 +194,16 @@
     <!-- =============================================
       HERO SECTION
       First thing visitors see. Full viewport height.
-      Typewriter cycling phrases → edit in js/main.js
     ============================================= -->
     <section class="hero">
       <!-- Main headline -->
       <h1>Backend dev.</h1>
 
-      <!-- Sub-paragraph. <span> inside = highlighted words. -->
+      <!-- Sub-paragraph. <strong> inside = emphasised words. -->
       <p class="hero-sub">
-        I'm <span>Fisayo</span>, a self-taught Python backend developer with
-        <span>2+ years</span> of experience building data pipelines. Based in
-        <span>Nigeria (WAT)</span>, open to remote work.
+        I'm <strong>Fisayo</strong>, a self-taught Python backend developer with
+        <strong>2+ years</strong> of experience building data pipelines. Based in
+        <strong>Nigeria (WAT)</strong>, open to remote work.
       </p>
 
       <div class="hero-cta">
@@ -241,7 +263,7 @@
 
         <a
           href="mailto:balogunfisayo23@gmail.com?subject=Demo%20request%3A%20Sports%20analytics%20pipeline"
-          class="project-row reveal"
+          class="project-row project-row--mail reveal"
         >
           <div class="project-row-main">
             <div class="project-row-title">
@@ -349,7 +371,7 @@
         <p>
           If you're working on something interesting: civic tech, history,
           financial literacy, or anything that'll make an impact no matter how
-          tiny I'd love to volunteer.
+          tiny, I'd love to volunteer.
         </p>
       </div>
 
@@ -361,134 +383,134 @@
         <div class="tool-list">
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/python-original.svg"
               alt=""
             />Python</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/django-plain.svg"
               alt=""
             />Django</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/flask-original.svg"
               alt=""
             />Flask</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/fastapi-original.svg"
               alt=""
             />FastAPI</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/postgresql-original.svg"
               alt=""
             />PostgreSQL</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/sqlite-original.svg"
               alt=""
             />SQLite</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/docker-original.svg"
               alt=""
             />Docker</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/googlecloud-original.svg"
               alt=""
             />Cloud Run</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/amazonwebservices-original-wordmark.svg"
               alt=""
             />AWS S3</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon icon-mono"
-              src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/render.svg"
+              width="16" height="16" class="tool-icon icon-mono"
+              src="icons/render.svg"
               alt=""
             />Render</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/railway/railway-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/railway-original.svg"
               alt=""
             />Railway</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.simpleicons.org/qgis/589632"
+              width="16" height="16" class="tool-icon"
+              src="icons/qgis.svg"
               alt=""
             />QGIS</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.simpleicons.org/claude/D97757"
+              width="16" height="16" class="tool-icon"
+              src="icons/claude.svg"
               alt=""
             />Claude</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/openai.svg"
               alt=""
             />ChatGPT</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/nodejs-original.svg"
               alt=""
             />Node.js</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/javascript-original.svg"
               alt=""
             />JavaScript</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/express-original.svg"
               alt=""
             />Express</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
+              width="16" height="16" class="tool-icon icon-dark"
+              src="icons/pandas-original.svg"
               alt=""
             />Pandas</span
           >
           <span class="tool-tag"
             ><img
-              class="tool-icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apacheairflow/apacheairflow-original.svg"
+              width="16" height="16" class="tool-icon"
+              src="icons/apacheairflow-original.svg"
               alt=""
             />Airflow</span
           >
@@ -505,7 +527,7 @@
         <div class="contact-heading">Reach out to me</div>
         <p class="contact-desc">
           If you're building something that you think I'll be interested in, do
-          reach out.
+          reach out at <a href="mailto:balogunfisayo23@gmail.com" class="contact-email">balogunfisayo23@gmail.com</a>.
         </p>
         <div class="contact-links">
           <a href="mailto:balogunfisayo23@gmail.com" class="contact-link"
@@ -530,8 +552,8 @@
             >↗ Upwork</a
           >
           <a
-            href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/edit?usp=sharing"
-            target="_blank"
+            href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/view"
+            target="_blank" rel="noopener"
             class="contact-link"
             >↗ Résumé</a
           >

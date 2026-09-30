@@ -10,7 +10,8 @@
    3.  Hamburger menu (mobile)
    4.  Theme toggle (light/dark)
    5.  Scroll reveal
-   6.  Live chess.com rating
+   6.  Featured projects drift check
+   7.  Live chess.com rating
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -20,24 +21,29 @@
 
 /* ================================================================
    0. PRELOADER
-   Shown on a hard reload, and on the very first page load of a
-   browsing session — not on every internal link click between
-   pages (e.g. /projects -> /#about), which would replay it
-   annoyingly on ordinary site navigation.
+   Shown on the first page load of a browsing session, then again
+   only after 15 minutes have passed — not on refreshes or internal
+   link clicks between pages (e.g. /projects -> /#about), which
+   would replay it annoyingly.
 ================================================================ */
 const preloader = document.getElementById('preloader');
 
 if (preloader) {
-  const navEntry = performance.getEntriesByType('navigation')[0];
-  const isReload = navEntry ? navEntry.type === 'reload' : false;
-  const hasVisited = sessionStorage.getItem('hasVisited') === '1';
-  sessionStorage.setItem('hasVisited', '1');
+  const REPLAY_AFTER_MS = 15 * 60 * 1000;
+  let lastShown = 0;
+  try {
+    lastShown = Number(sessionStorage.getItem('preloaderShownAt')) || 0;
+  } catch (e) {}
+  const recentlyShown = Date.now() - lastShown < REPLAY_AFTER_MS;
 
-  if (!isReload && hasVisited) {
+  if (recentlyShown) {
     preloader.remove();
   } else if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     preloader.remove();
   } else {
+    try {
+      sessionStorage.setItem('preloaderShownAt', String(Date.now()));
+    } catch (e) {}
     const MIN_DISPLAY_MS = 2450;
     const shownAt = Date.now();
 
@@ -106,18 +112,32 @@ window.addEventListener('scroll', () => {
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
+// Single place that sets open/closed, keeping ARIA and focusability in
+// sync. `inert` takes the closed menu's links out of the tab order.
+function setMenuOpen(open) {
+  hamburger.classList.toggle('open', open);
+  mobileMenu.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', String(open));
+  mobileMenu.inert = !open;
+}
+setMenuOpen(false);
+
 // Toggle menu open/closed on hamburger click
 hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
+  setMenuOpen(!mobileMenu.classList.contains('open'));
 });
 
 // Close menu when any link inside it is clicked
 mobileMenu.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-  });
+  link.addEventListener('click', () => setMenuOpen(false));
+});
+
+// Escape closes the menu and returns focus to the hamburger
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+    setMenuOpen(false);
+    hamburger.focus();
+  }
 });
 
 
@@ -273,7 +293,7 @@ if (homepageProjectsSection) {
 
 
 /* ================================================================
-   6. LIVE CHESS.COM RATING
+   7. LIVE CHESS.COM RATING
    Public chess.com API, no auth. Shows the highest of the player's
    rapid/blitz/bullet ratings. Cached in localStorage for an hour.
    If the request fails, the "pulled live" clause is removed so the
