@@ -12,6 +12,7 @@
    5.  Scroll reveal
    6.  Featured projects drift check
    7.  Live chess.com rating
+   8.  GitHub contribution graph
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -329,4 +330,92 @@ if (homepageProjectsSection) {
       var live = document.getElementById('chess-live');
       if (live) live.remove();
     });
+})();
+
+
+/* ================================================================
+   8. GITHUB CONTRIBUTION GRAPH
+   GitHub has no unauthenticated endpoint for the contribution
+   calendar, so this uses github-contributions-api.jogruber.de, a
+   public proxy that scrapes the profile page. Cached in localStorage
+   for an hour. If the request fails, the whole subsection is removed.
+
+   Layout matches GitHub: one column per week, Sunday at the top.
+================================================================ */
+(function () {
+  var box = document.getElementById('github-graph');
+  if (!box) return;
+
+  var USER = 'oluwafisayomi-balogun';
+  var KEY = 'gh-contrib';
+  var TTL = 60 * 60 * 1000;
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function render(d) {
+    var days = d.contributions;
+    var cells = box.querySelector('.gh-cells');
+    var months = box.querySelector('.gh-months');
+    var frag = document.createDocumentFragment();
+
+    // Blank cells so the first day lands on its weekday row
+    var lead = new Date(days[0].date + 'T00:00:00Z').getUTCDay();
+    for (var i = 0; i < lead; i++) {
+      var pad = document.createElement('span');
+      pad.className = 'gh-cell';
+      pad.style.visibility = 'hidden';
+      frag.appendChild(pad);
+    }
+
+    var totalWeeks = Math.ceil((lead + days.length) / 7);
+    box.style.setProperty('--gh-weeks', totalWeeks);
+    var lastMonth = -1;
+    days.forEach(function (day, i) {
+      var date = new Date(day.date + 'T00:00:00Z');
+      var cell = document.createElement('span');
+      cell.className = 'gh-cell';
+      cell.dataset.level = day.level;
+      cell.title = day.count + ' contribution' + (day.count === 1 ? '' : 's') +
+        ' on ' + MONTHS[date.getUTCMonth()] + ' ' + date.getUTCDate();
+      frag.appendChild(cell);
+
+      // Label a month at the first week column it appears in, skipping
+      // labels that would collide at the very start or end.
+      var m = date.getUTCMonth();
+      if (m !== lastMonth) {
+        var week = Math.floor((lead + i) / 7);
+        if (lastMonth !== -1 || date.getUTCDate() < 8) {
+          if (week < totalWeeks - 2) {
+            var label = document.createElement('span');
+            label.textContent = MONTHS[m];
+            label.style.gridColumn = week + 1;
+            months.appendChild(label);
+          }
+        }
+        lastMonth = m;
+      }
+    });
+    cells.appendChild(frag);
+
+    box.querySelector('.gh-total').textContent =
+      d.total.lastYear + ' contributions in the last year';
+
+    // Most recent weeks matter most: start scrolled to the right
+    var scroller = box.querySelector('.gh-scroll');
+    scroller.scrollLeft = scroller.scrollWidth;
+  }
+
+  try {
+    var c = JSON.parse(localStorage.getItem(KEY));
+    if (c && Date.now() - c.t < TTL) { render(c.v); return; }
+  } catch (e) {}
+
+  fetch('https://github-contributions-api.jogruber.de/v4/' + USER + '?y=last')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      if (!d.contributions || !d.contributions.length) throw new Error('no data');
+      render(d);
+      try { localStorage.setItem(KEY, JSON.stringify({ v: d, t: Date.now() })); } catch (e) {}
+    })
+    .catch(function () { box.remove(); });
 })();

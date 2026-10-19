@@ -850,6 +850,86 @@ section {
   opacity: 1;
 }
 
+/* "~/github" subsection — contribution graph built by js/main.js.
+   Cells shade from the border colour up to the full highlight, so it
+   follows the one-accent rule instead of GitHub green. */
+.github-subsection {
+  margin-top: 100px;
+  max-width: 1200px;
+  --gh-gap: 3px;
+}
+.gh-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+/* Cells stretch to fill the width, but never shrink below ~10px —
+   on narrow screens the graph scrolls instead. --gh-weeks is set by JS. */
+.gh-graph {
+  min-width: calc(var(--gh-weeks, 53) * 13px);
+}
+.gh-months,
+.gh-cells {
+  display: grid;
+  grid-template-columns: repeat(var(--gh-weeks, 53), minmax(0, 1fr));
+  column-gap: var(--gh-gap);
+}
+.gh-months {
+  height: 20px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.gh-months span {
+  white-space: nowrap;
+}
+.gh-cells {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, auto);
+  row-gap: var(--gh-gap);
+}
+.gh-cells .gh-cell {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+.gh-cell {
+  display: inline-block;
+  border-radius: 2px;
+  background: var(--border);
+}
+.gh-cell[data-level="1"] { background: color-mix(in srgb, var(--highlight) 30%, var(--border)); }
+.gh-cell[data-level="2"] { background: color-mix(in srgb, var(--highlight) 55%, var(--border)); }
+.gh-cell[data-level="3"] { background: color-mix(in srgb, var(--highlight) 80%, var(--border)); }
+.gh-cell[data-level="4"] { background: var(--highlight); }
+.gh-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.gh-total {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--highlight);
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.gh-total:hover {
+  color: var(--highlight);
+}
+.gh-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.gh-legend .gh-cell {
+  width: 10px;
+  height: 10px;
+}
+
 /* ================================================================
    9. PROJECTS SECTION
    Row-list layout: each project is one clickable <a> row with
@@ -1183,7 +1263,8 @@ footer span {
   .about-text {
     max-width: 100%;
   }
-  .stack-subsection {
+  .stack-subsection,
+  .github-subsection {
     margin-top: 70px;
   }
   #projects {
