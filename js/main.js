@@ -13,6 +13,7 @@
    6.  Featured projects drift check
    7.  Live chess.com rating
    8.  GitHub contribution graph
+   9.  Lagos local time
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -418,4 +419,33 @@ if (homepageProjectsSection) {
       try { localStorage.setItem(KEY, JSON.stringify({ v: d, t: Date.now() })); } catch (e) {}
     })
     .catch(function () { box.remove(); });
+})();
+
+
+/* ================================================================
+   9. LAGOS LOCAL TIME
+   Shows the current time in Lagos inside the hero sentence, so
+   visitors in other time zones can see my hours at a glance.
+   Hidden in the HTML until this runs, so no-JS visitors just see
+   "Nigeria (WAT)". Re-renders every 15s to stay on the minute.
+================================================================ */
+(function () {
+  var wrap = document.getElementById('lagos-time');
+  if (!wrap) return;
+  var clock = wrap.querySelector('.lagos-clock');
+  var fmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Africa/Lagos',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+
+  function tick() {
+    var now = new Date();
+    clock.textContent = fmt.format(now);
+    clock.dateTime = now.toISOString();
+  }
+
+  tick();
+  wrap.hidden = false;
+  setInterval(tick, 15 * 1000);
 })();

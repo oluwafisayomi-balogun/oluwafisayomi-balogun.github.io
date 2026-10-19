@@ -625,6 +625,12 @@ nav.scrolled {
   font-weight: 500;
 }
 
+/* Live Lagos clock in the hero sentence. Tabular digits stop the
+   text shifting when the minute changes. */
+.lagos-clock {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Live chess.com rating link (About section) */
 .chess-elo {
   color: var(--accent);
