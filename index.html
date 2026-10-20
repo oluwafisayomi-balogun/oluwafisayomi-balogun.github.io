@@ -250,15 +250,16 @@
             </div>
             <div class="project-row-desc">
               The backend and data pipeline behind Lagos's first
-              comprehensive ferry map. A Node/Express/Drizzle API on
-              PostgreSQL powers public-facing crowdsourced submission forms
-              for jetties and routes. A parallel Python toolchain publishes
-              the GTFS feed, syncs route geometry from OSM/GeoJSON sources,
-              and runs automated data-quality checks against the live
-              database.
+              GTFS-compliant ferry dataset, submitted to Google Maps,
+              OpenStreetMap and the Mobility Database. A Node/Express/Drizzle
+              API on PostgreSQL powers public-facing crowdsourced submission
+              forms for jetties and routes. A parallel Python toolchain,
+              containerised with Docker on Cloud Run, publishes the GTFS feed,
+              syncs route geometry from OSM/GeoJSON sources, and runs
+              automated data-quality checks against the live database.
             </div>
             <div class="project-row-stack">
-              Node.js · Express · TypeScript · PostgreSQL · Drizzle ORM · Python (GTFS/OSM pipelines)
+              Node.js · Express · TypeScript · Drizzle ORM · PostgreSQL · Python · Docker · Cloud Run · GTFS · OpenStreetMap
             </div>
           </div>
         </a>
@@ -321,7 +322,7 @@
               local JSON file in development, behind one shared interface.
             </div>
             <div class="project-row-stack">
-              Python · aiogram · PostgreSQL · APScheduler · Railway
+              Python · aiogram · PostgreSQL · APScheduler · Fly.io
             </div>
           </div>
         </a>
@@ -393,23 +394,9 @@
           <span class="tool-tag"
             ><img
               width="16" height="16" class="tool-icon icon-dark"
-              src="icons/django-plain.svg"
-              alt=""
-            />Django</span
-          >
-          <span class="tool-tag"
-            ><img
-              width="16" height="16" class="tool-icon icon-dark"
               src="icons/flask-original.svg"
               alt=""
             />Flask</span
-          >
-          <span class="tool-tag"
-            ><img
-              width="16" height="16" class="tool-icon"
-              src="icons/fastapi-original.svg"
-              alt=""
-            />FastAPI</span
           >
           <span class="tool-tag"
             ><img
@@ -455,10 +442,10 @@
           >
           <span class="tool-tag"
             ><img
-              width="16" height="16" class="tool-icon"
-              src="icons/railway-original.svg"
+              width="16" height="16" class="tool-icon icon-mono"
+              src="icons/flydotio.svg"
               alt=""
-            />Railway</span
+            />Fly.io</span
           >
           <span class="tool-tag"
             ><img
@@ -497,6 +484,13 @@
           >
           <span class="tool-tag"
             ><img
+              width="16" height="16" class="tool-icon"
+              src="icons/typescript-original.svg"
+              alt=""
+            />TypeScript</span
+          >
+          <span class="tool-tag"
+            ><img
               width="16" height="16" class="tool-icon icon-dark"
               src="icons/express-original.svg"
               alt=""
@@ -512,9 +506,23 @@
           <span class="tool-tag"
             ><img
               width="16" height="16" class="tool-icon"
-              src="icons/apacheairflow-original.svg"
+              src="icons/playwright-original.svg"
               alt=""
-            />Airflow</span
+            />Playwright</span
+          >
+          <span class="tool-tag"
+            ><img
+              width="16" height="16" class="tool-icon"
+              src="icons/githubactions-original.svg"
+              alt=""
+            />GitHub Actions</span
+          >
+          <span class="tool-tag"
+            ><img
+              width="16" height="16" class="tool-icon"
+              src="icons/googlesheets.svg"
+              alt=""
+            />Google Sheets API</span
           >
         </div>
       </div>
@@ -598,7 +606,7 @@
       Edit: name, year, tagline.
     ============================================= -->
     <footer>
-      <span>© 2026 Oluwafisayomi Balogun</span>
+      <span>© <span class="footer-year">2026</span> Oluwafisayomi Balogun</span>
     </footer>
 
     <!-- Script at end of <body> so all HTML elements

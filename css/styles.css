@@ -845,7 +845,7 @@ section {
 }
 
 /* Same problem for other logos drawn in black or very dark colours
-   (Django, Flask, Express, Pandas, ChatGPT, AWS). Inverted to light grey
+   (Flask, Express, Pandas, ChatGPT, AWS). Inverted to light grey
    in dark theme; they stay monochrome on hover since inverting a coloured
    logo would produce odd colours. */
 :root[data-theme="dark"] .tool-icon.icon-dark {

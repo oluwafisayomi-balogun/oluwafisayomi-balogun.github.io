@@ -133,14 +133,15 @@
             <div class="project-row-title">Lagos Ferry Map</div>
             <div class="project-row-desc">
               The backend and data pipeline behind Lagos's first
-              comprehensive ferry map. A Node/Express/Drizzle API on
-              PostgreSQL powers public-facing crowdsourced submission forms
-              for jetties and routes. A parallel Python toolchain publishes
-              the GTFS feed, syncs route geometry from OSM/GeoJSON sources,
-              and runs automated data-quality checks against the live
-              database.
+              GTFS-compliant ferry dataset, submitted to Google Maps,
+              OpenStreetMap and the Mobility Database. A Node/Express/Drizzle
+              API on PostgreSQL powers public-facing crowdsourced submission
+              forms for jetties and routes. A parallel Python toolchain,
+              containerised with Docker on Cloud Run, publishes the GTFS feed,
+              syncs route geometry from OSM/GeoJSON sources, and runs
+              automated data-quality checks against the live database.
             </div>
-            <div class="project-row-stack">Node.js · Express · TypeScript · PostgreSQL · Drizzle ORM · Python (GTFS/OSM pipelines)</div>
+            <div class="project-row-stack">Node.js · Express · TypeScript · Drizzle ORM · PostgreSQL · Python · Docker · Cloud Run · GTFS · OpenStreetMap</div>
           </div>
         </a>
 
@@ -183,7 +184,7 @@
               Storage swaps automatically between PostgreSQL in production and a
               local JSON file in development, behind one shared interface.
             </div>
-            <div class="project-row-stack">Python · aiogram · PostgreSQL · APScheduler · Railway</div>
+            <div class="project-row-stack">Python · aiogram · PostgreSQL · APScheduler · Fly.io</div>
           </div>
         </a>
 
@@ -216,9 +217,12 @@
               coups and conflict, and country context pages. Handled data
               sourcing, cleaning and pipelines, and automated election data
               workflows from collection to processing in Python, cutting
-              manual data entry by over 80%.
+              manual data entry by over 80%. Also built a GPT-based pipeline
+              that pulls content from RSS feeds and web searches, summarises
+              it, and writes it to Google Docs, cutting content processing
+              time by 85%.
             </div>
-            <div class="project-row-stack">Python · Flourish · Data Pipelines · Automation</div>
+            <div class="project-row-stack">Python · OpenAI API · Google Docs API · Flourish · Data Pipelines</div>
           </div>
         </a>
 
@@ -254,7 +258,7 @@
       Edit: name, year, tagline.
     ============================================= -->
     <footer>
-      <span>© 2026 Oluwafisayomi Balogun</span>
+      <span>© <span class="footer-year">2026</span> Oluwafisayomi Balogun</span>
     </footer>
 
     <!-- Script at end of <body> so all HTML elements

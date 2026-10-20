@@ -14,6 +14,7 @@
    7.  Live chess.com rating
    8.  GitHub contribution graph
    9.  Lagos local time
+   10. Footer year
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -449,3 +450,13 @@ if (homepageProjectsSection) {
   wrap.hidden = false;
   setInterval(tick, 15 * 1000);
 })();
+
+
+/* ================================================================
+   10. FOOTER YEAR
+   Keeps the © year current. The HTML holds a hard-coded year as
+   the fallback for no-JS visitors.
+================================================================ */
+document.querySelectorAll('.footer-year').forEach(function (el) {
+  el.textContent = new Date().getFullYear();
+});
