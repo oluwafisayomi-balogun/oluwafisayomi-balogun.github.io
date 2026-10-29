@@ -6,7 +6,7 @@
    -----------------
    1.  CSS Variables  (colour palette — edit here)
    2.  Reset & Base
-   3.  Background textures & glow blobs
+   3.  Background textures
    4.  Navigation (desktop)
    5.  Navigation (mobile — hamburger menu)
    6.  Hero section
@@ -58,7 +58,6 @@
   /* Brand Accent — monochrome: the accent is the ink colour itself */
   --accent: #1c1b1f; /* Ink: links, active states */
   --accent-strong: #000000; /* Pure black: emphasis            */
-  --accent-subtle: #ebe8e1; /* Pale grey tint: glow rings, tints                     */
 
   /* Highlight — burnt orange, ONLY for hovers and underlines */
   --highlight: #bf4e0a;
@@ -91,7 +90,6 @@
 :root[data-theme="dark"] {
   --accent: #f2f1ed;
   --accent-strong: #ffffff;
-  --accent-subtle: #1f1f1f;
 
   --highlight: #e8743b;
   --highlight-glow: rgba(232, 116, 59, 0.12);
@@ -306,14 +304,11 @@ body {
 }
 
 /* ================================================================
-   3. BACKGROUND TEXTURES & GLOW BLOBS
+   3. BACKGROUND TEXTURES
 
    body::before — subtle film grain noise (SVG data URI)
    body::after  — faint chessboard, fading toward the edges
    Both use pointer-events: none so they never block clicks.
-
-   .glow-blob — blurred circles creating the ambient grey glow.
-   position: fixed so they stay put while you scroll.
 ================================================================ */
 body::before {
   content: "";
@@ -345,63 +340,14 @@ body::after {
   z-index: 0;
 }
 
-.glow-blob {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(110px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.09; /* faint on the light background — warmth, not neon */
-}
-
-/* Reposition blobs by editing top / right / bottom / left */
-.glow-blob-1 {
-  width: 520px;
-  height: 520px;
-  --blob-color: var(--accent);
-  background: var(--blob-color);
-  top: -160px;
-  right: -80px;
-}
-.glow-blob-2 {
-  width: 360px;
-  height: 360px;
-  --blob-color: var(--accent-strong);
-  background: var(--blob-color);
-  bottom: 20%;
-  left: -100px;
-}
-.glow-blob-3 {
-  width: 260px;
-  height: 260px;
-  --blob-color: var(--accent-subtle);
-  background: var(--blob-color);
-  top: 50%;
-  right: 10%;
-}
-
-/* Touch screens (phones): the effects above made pages take seconds
-   to load and left content unpainted while scrolling on iPhone.
-   - The noise is an SVG turbulence filter, which WebKit draws pixel by
-     pixel on the CPU, for the whole screen at 3x resolution. At this
-     opacity it isn't visible on a phone anyway, so it's dropped.
-   - A 110px blur on the blobs is redone by the GPU every frame. A radial
-     gradient that follows the same blurred-disc falloff looks the same
-     and costs nothing. scale(2) covers the area the blur spread into. */
+/* Touch screens (phones): the noise is an SVG turbulence filter, which
+   WebKit draws pixel by pixel on the CPU, for the whole screen at 3x
+   resolution. On iPhone that held pages up for seconds and left content
+   unpainted while scrolling. At this opacity it isn't visible on a
+   phone anyway, so it's dropped. */
 @media (hover: none) {
   body::before {
     display: none;
-  }
-  .glow-blob {
-    filter: none;
-    transform: scale(2);
-    background: radial-gradient(
-      closest-side,
-      var(--blob-color),
-      color-mix(in srgb, var(--blob-color) 50%, transparent) 50%,
-      color-mix(in srgb, var(--blob-color) 16%, transparent) 75%,
-      transparent
-    );
   }
 }
 
