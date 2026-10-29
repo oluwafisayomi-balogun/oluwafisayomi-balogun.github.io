@@ -520,7 +520,7 @@ document.querySelectorAll('.footer-year').forEach(function (el) {
    ?debug=0 / ?nofx=0 turn them off again.
 ================================================================ */
 (function () {
-  var BUILD = 'dbg1';
+  var BUILD = 'dbg2';
   var params = new URLSearchParams(location.search);
   function flag(name) {
     try {

@@ -358,23 +358,51 @@ body::after {
 .glow-blob-1 {
   width: 520px;
   height: 520px;
-  background: var(--accent);
+  --blob-color: var(--accent);
+  background: var(--blob-color);
   top: -160px;
   right: -80px;
 }
 .glow-blob-2 {
   width: 360px;
   height: 360px;
-  background: var(--accent-strong);
+  --blob-color: var(--accent-strong);
+  background: var(--blob-color);
   bottom: 20%;
   left: -100px;
 }
 .glow-blob-3 {
   width: 260px;
   height: 260px;
-  background: var(--accent-subtle);
+  --blob-color: var(--accent-subtle);
+  background: var(--blob-color);
   top: 50%;
   right: 10%;
+}
+
+/* Touch screens (phones): the effects above made pages take seconds
+   to load and left content unpainted while scrolling on iPhone.
+   - The noise is an SVG turbulence filter, which WebKit draws pixel by
+     pixel on the CPU, for the whole screen at 3x resolution. At this
+     opacity it isn't visible on a phone anyway, so it's dropped.
+   - A 110px blur on the blobs is redone by the GPU every frame. A radial
+     gradient that follows the same blurred-disc falloff looks the same
+     and costs nothing. scale(2) covers the area the blur spread into. */
+@media (hover: none) {
+  body::before {
+    display: none;
+  }
+  .glow-blob {
+    filter: none;
+    transform: scale(2);
+    background: radial-gradient(
+      closest-side,
+      var(--blob-color),
+      color-mix(in srgb, var(--blob-color) 50%, transparent) 50%,
+      color-mix(in srgb, var(--blob-color) 16%, transparent) 75%,
+      transparent
+    );
+  }
 }
 
 /* ================================================================
@@ -1395,7 +1423,7 @@ footer span {
    TEMPORARY — mobile perf debugging (?debug, ?nofx). Remove after.
 ================================================================ */
 :root {
-  --build: "dbg1";
+  --build: "dbg2";
 }
 .nofx body::before,
 .nofx body::after,
