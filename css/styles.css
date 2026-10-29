@@ -19,6 +19,37 @@
    13. Responsive / mobile  (max-width: 768px)
 ================================================================ */
 
+/* DM Mono, self-hosted from fonts/ (latin subset, as served by
+   Google Fonts). Preloaded in each page's <head>. */
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/dm-mono-300.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/dm-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/dm-mono-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/dm-mono-400-italic.woff2") format("woff2");
+}
+
 /* ================================================================
    1. CSS VARIABLES — COLOUR PALETTE
    Edit values here and the whole site updates automatically.
@@ -1195,6 +1226,17 @@ footer span {
   transform: none;
 }
 
+/* Touch screens: no scroll reveal. iOS browsers (Chrome included —
+   they're all WebKit) hold back JS timers during momentum scrolling,
+   so content stayed blank until the scroll came to a stop. */
+@media (hover: none) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Reduced motion — for visitors who've asked their device for less motion:
    no entrance animations, chevron bounce, hover lift or smooth scrolling.
    Elements that start at opacity:0 are forced visible. */
@@ -1220,6 +1262,39 @@ footer span {
   .project-row:hover,
   .js .project-row.reveal.visible:hover {
     transform: none;
+  }
+}
+
+/* Page-leave loading bar — js/main.js adds .is-leaving to <html> the
+   moment a link to another page is tapped. Grows fast, then crawls,
+   so it always looks like it's moving until the next page paints. */
+.page-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 2px;
+  width: 0;
+  background: var(--text);
+  pointer-events: none;
+  opacity: 0;
+}
+.is-leaving .page-loading {
+  opacity: 1;
+  animation: pageLoading 8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+@keyframes pageLoading {
+  from {
+    width: 0;
+  }
+  to {
+    width: 92%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-leaving .page-loading {
+    animation: none;
+    width: 100%;
   }
 }
 

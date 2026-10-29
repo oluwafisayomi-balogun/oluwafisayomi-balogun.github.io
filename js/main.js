@@ -15,6 +15,7 @@
    8.  GitHub contribution graph
    9.  Lagos local time
    10. Footer year
+   11. Page-leave loading bar
 
    NOTE: This script is at the END of <body> in index.html.
    All HTML elements exist before this code runs, so
@@ -475,3 +476,36 @@ if (homepageProjectsSection) {
 document.querySelectorAll('.footer-year').forEach(function (el) {
   el.textContent = new Date().getFullYear();
 });
+
+
+/* ================================================================
+   11. PAGE-LEAVE LOADING BAR
+   On a slow mobile connection the old page can sit on screen for a
+   few seconds after tapping a link to another page, with the
+   browser's own progress bar barely moving — so people tap again.
+   This shows an animated bar at the top the instant they tap.
+
+   Only for same-site links to a different page: not new tabs,
+   not #anchors on this page, not mailto:. Cleared on pageshow so
+   it's gone when coming back via the back button.
+================================================================ */
+(function () {
+  var bar = document.createElement('div');
+  bar.className = 'page-loading';
+  bar.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(bar);
+
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var link = e.target.closest('a[href]');
+    if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+    var url = new URL(link.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname && url.search === location.search) return;
+    root.classList.add('is-leaving');
+  });
+
+  window.addEventListener('pageshow', function () {
+    root.classList.remove('is-leaving');
+  });
+})();
