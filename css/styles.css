@@ -1258,6 +1258,13 @@ footer span {
   .scroll-cue {
     display: none;
   } /* Not useful on touch */
+  /* Without the scroll cue, a full-height centred hero leaves half a
+     screen of blank space under the buttons. Size it to its content. */
+  .hero {
+    min-height: auto;
+    padding-top: 140px;
+    padding-bottom: 20px;
+  }
 
   /* Sections */
   section {

@@ -215,7 +215,9 @@ document.querySelectorAll('.theme-toggle').forEach((btn) => {
    Adds .visible when the element enters the viewport.
    CSS transitions in styles.css do the actual animation.
 
-   threshold: 0.1 — triggers when 10% of the element is visible.
+   threshold: 0 + rootMargin — triggers as soon as the element's top
+   edge is 40px into the viewport. (A % threshold made tall blocks,
+   like the stack grid on mobile, wait far too long to appear.)
 
    Staggered setTimeout(i * 80) creates a cascade when multiple
    elements enter the viewport at the same time.
@@ -233,7 +235,8 @@ const revealObserver = new IntersectionObserver((entries) => {
     }
   });
 }, {
-  threshold: 0.1,
+  threshold: 0,
+  rootMargin: '0px 0px -40px 0px',
 });
 
 document.querySelectorAll('.reveal').forEach((el) => {
@@ -259,7 +262,7 @@ if (homepageProjectsSection) {
     homepageProjectsSection.querySelectorAll('.project-row-title')
   ).map((el) => el.textContent.trim());
 
-  fetch('/projects')
+  fetch('/projects/')
     .then((res) => res.text())
     .then((html) => {
       const fullList = new DOMParser().parseFromString(html, 'text/html');

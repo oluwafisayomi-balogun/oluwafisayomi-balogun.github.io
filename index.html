@@ -47,6 +47,9 @@
     <!-- All styles live in css/styles.css -->
     <link rel="stylesheet" href="css/styles.css" />
 
+    <!-- Fetch /projects/ in the background so tapping through is instant -->
+    <link rel="prefetch" href="/projects/" />
+
     <!-- Set the theme before first paint, so there's no flash of the
          wrong theme while js/main.js (loaded at end of body) runs. -->
     <script>
@@ -107,7 +110,7 @@
 
       <!-- Desktop nav links (hidden on mobile via CSS) -->
       <div class="nav-links" id="navLinks">
-        <a href="/projects">/Projects</a>
+        <a href="/projects/">/Projects</a>
         <a href="#about">/About</a>
         <a href="#contact">/Contact</a>
         <a
@@ -154,7 +157,7 @@
 
     <!-- Mobile menu panel — toggled by hamburger button via JS -->
     <div class="mobile-menu" id="mobileMenu">
-      <a href="/projects">/Projects</a>
+      <a href="/projects/">/Projects</a>
       <a href="#about">/About</a>
       <a href="#contact">/Contact</a>
       <a
@@ -209,7 +212,7 @@
       </p>
 
       <div class="hero-cta">
-        <a href="/projects" class="btn btn-ghost">See my projects</a>
+        <a href="/projects/" class="btn btn-ghost">See my projects</a>
         <a href="#contact" class="btn btn-ghost">Contact me</a>
       </div>
 
@@ -329,7 +332,7 @@
 
       </div>
 
-      <a href="/projects" class="projects-more">All projects →</a>
+      <a href="/projects/" class="projects-more">All projects →</a>
     </section>
 
     <!-- =============================================
