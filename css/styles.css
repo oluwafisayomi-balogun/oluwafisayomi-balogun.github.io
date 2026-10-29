@@ -1390,3 +1390,20 @@ footer span {
     padding: 24px 20px;
   }
 }
+
+/* ================================================================
+   TEMPORARY — mobile perf debugging (?debug, ?nofx). Remove after.
+================================================================ */
+:root {
+  --build: "dbg1";
+}
+.nofx body::before,
+.nofx body::after,
+.nofx .glow-blob {
+  display: none;
+}
+.nofx nav.scrolled,
+.nofx .mobile-menu {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
