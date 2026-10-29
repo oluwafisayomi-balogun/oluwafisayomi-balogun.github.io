@@ -958,15 +958,15 @@ section {
   transition: transform 0.2s ease;
 }
 
-/* .js .reveal.visible sets a 0.7s transform transition (for its scroll-in fade).
+/* .js .reveal.visible sets a 0.4s transform transition (for its scroll-in fade).
    It out-specifies .project-row's 0.2s (2 classes vs 1), so once an element
-   has settled into .reveal.visible, leaving hover used that 0.7s transition
-   instead — the lift went up snappily but came back down sluggishly. Pin
+   has settled into .reveal.visible, leaving hover used that 0.4s transition
+   instead — the lift went up snappily but came back down slower. Pin
    the transform transition back to 0.2s at the same specificity so both
    directions of the hover lift stay snappy. */
 .js .project-row.reveal.visible {
   transition:
-    opacity 0.7s ease,
+    opacity 0.4s ease-out,
     transform 0.2s ease;
 }
 
@@ -1185,10 +1185,10 @@ footer span {
 ================================================================ */
 .js .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(16px);
   transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out;
 }
 .js .reveal.visible {
   opacity: 1;

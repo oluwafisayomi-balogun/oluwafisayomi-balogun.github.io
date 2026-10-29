@@ -215,32 +215,44 @@ document.querySelectorAll('.theme-toggle').forEach((btn) => {
    Adds .visible when the element enters the viewport.
    CSS transitions in styles.css do the actual animation.
 
-   threshold: 0 + rootMargin — triggers as soon as the element's top
-   edge is 40px into the viewport. (A % threshold made tall blocks,
-   like the stack grid on mobile, wait far too long to appear.)
+   threshold: 0 — triggers as soon as any part of the element enters
+   the viewport. (A % threshold made tall blocks, like the stack grid
+   on mobile, wait far too long to appear.)
 
-   Staggered setTimeout(i * 80) creates a cascade when multiple
+   Staggered setTimeout(i * 40) creates a short cascade when multiple
    elements enter the viewport at the same time.
+
+   Elements already on screen when the page loads (e.g. the whole top
+   of /projects) skip the animation entirely — dropping .reveal before
+   first paint means they show up with the page instead of fading in
+   after it, which read as the page lagging.
 
    unobserve() stops watching after reveal — animates only once.
 ================================================================ */
 const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+  // Count only entering elements: `entries` also holds ones that just
+  // left the viewport, and indexing by those delayed reveals by 500ms+
+  // after a fast scroll.
+  let i = 0;
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       setTimeout(() => {
         entry.target.classList.add('visible');
-      }, i * 80); // stagger each element by 80ms
+      }, i++ * 40); // stagger each element by 40ms
 
       revealObserver.unobserve(entry.target); // reveal once only
     }
   });
 }, {
   threshold: 0,
-  rootMargin: '0px 0px -40px 0px',
 });
 
 document.querySelectorAll('.reveal').forEach((el) => {
-  revealObserver.observe(el);
+  if (el.getBoundingClientRect().top < window.innerHeight) {
+    el.classList.remove('reveal');
+  } else {
+    revealObserver.observe(el);
+  }
 });
 
 
