@@ -241,14 +241,25 @@
               Lagos Ferry Map
             </div>
             <div class="project-row-desc">
-              Backend and data pipeline behind Lagos's first GTFS ferry
-              dataset, now on Google Maps, OpenStreetMap and the Mobility
-              Database. A Node/Postgres API collects crowdsourced jetty and
-              route data, and a Python toolchain on Cloud Run publishes the
-              feed and runs automated quality checks.
+              <span class="desc-full">The backend and data pipeline behind
+              Lagos's first GTFS-compliant ferry dataset, submitted to Google
+              Maps, OpenStreetMap and the Mobility Database. A
+              Node/Express/Drizzle API on PostgreSQL powers public-facing
+              crowdsourced submission forms for jetties and routes. A parallel
+              Python toolchain, containerised with Docker on Cloud Run,
+              publishes the GTFS feed, syncs route geometry from OSM/GeoJSON
+              sources, and runs automated data-quality checks against the live
+              database.</span>
+              <span class="desc-short">Backend and data pipeline behind
+              Lagos's first GTFS ferry dataset, now on Google Maps,
+              OpenStreetMap and the Mobility Database. A Node/Postgres API
+              collects crowdsourced jetty and route data, and a Python
+              toolchain on Cloud Run publishes the feed and runs automated
+              quality checks.</span>
             </div>
             <div class="project-row-stack">
-              Node.js · PostgreSQL · Python · Docker · GTFS
+              <span class="desc-full">Node.js · Express · TypeScript · Drizzle ORM · PostgreSQL · Python · Docker · Cloud Run · GTFS · OpenStreetMap</span>
+              <span class="desc-short">Node.js · PostgreSQL · Python · Docker · GTFS</span>
             </div>
           </div>
         </a>
@@ -262,11 +273,18 @@
               Sports Analytics Automation Pipeline
             </div>
             <div class="project-row-desc">
-              A client's production pipeline, in use since June 2026. It
-              scrapes five bot-protected sources, matches them up and scores
-              them with a 150-point model, then writes the rankings to Google
-              Sheets. A multi-hour daily process is now a one-click, 5-minute
-              run.
+              <span class="desc-full">Built for a client, in production since
+              June 2026. A production data pipeline that automates a full
+              sports-analytics workflow. It scrapes live stats from five
+              bot-protected sources, joins them with fuzzy name-matching, and
+              runs a 150-point scoring model, writing ranked results back to
+              Google Sheets. A non-technical client triggers the whole run from
+              a spreadsheet button, turning a multi-hour daily process into a
+              5-minute one-click run.</span>
+              <span class="desc-short">A production pipeline that scrapes five
+              bot-protected sources, matches them up and scores them with a
+              150-point model, then writes the rankings to Google Sheets. A
+              multi-hour daily process is now a one-click, 5-minute run.</span>
               <strong>Click through to request a live demo.</strong>
             </div>
             <div class="project-row-stack">
@@ -284,9 +302,10 @@
             <div class="project-row-title">Sports Bet Automation</div>
             <div class="project-row-desc">
               Reverse-engineered an undocumented REST API to place single and
-              combo bets programmatically on bc.game. Implemented JWT auth,
-              input validation, and robust error handling, reducing manual
-              execution to a single function call.
+              combo bets programmatically on bc.game.
+              <span class="desc-full">Implemented JWT auth, input validation,
+              and robust error handling, reducing manual execution to a single
+              function call.</span>
             </div>
             <div class="project-row-stack">
               Python · REST APIs · Chrome DevTools
@@ -304,8 +323,9 @@
             <div class="project-row-desc">
               A live Telegram bot that fetches currency exchange rates on demand
               and sends a daily rate broadcast via an in-process scheduler.
-              Storage swaps automatically between PostgreSQL in production and a
-              local JSON file in development, behind one shared interface.
+              <span class="desc-full">Storage swaps automatically between
+              PostgreSQL in production and a local JSON file in development,
+              behind one shared interface.</span>
             </div>
             <div class="project-row-stack">
               Python · aiogram · PostgreSQL (Neon) · APScheduler · Fly.io
