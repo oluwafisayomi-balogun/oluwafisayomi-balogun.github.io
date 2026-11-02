@@ -314,9 +314,10 @@ if (homepageProjectsSection) {
 /* ================================================================
    7. LIVE CHESS.COM RATING
    Public chess.com API, no auth. Shows the highest of the player's
-   rapid/blitz/bullet ratings. Cached in localStorage for an hour.
-   If the request fails, the "pulled live" clause is removed so the
-   sentence still reads naturally.
+   rapid/blitz/bullet ratings. The last value is cached in localStorage
+   and shown immediately, then replaced by a fresh fetch on every load.
+   If the request fails with nothing cached, the "pulled live" clause
+   is removed so the sentence still reads naturally.
 ================================================================ */
 (function () {
   var el = document.getElementById('chess-elo');
@@ -324,11 +325,11 @@ if (homepageProjectsSection) {
 
   var USER = 'fisayo1123';
   var KEY = 'chess-elo';
-  var TTL = 60 * 60 * 1000;
+  var cached = false;
 
   try {
     var c = JSON.parse(localStorage.getItem(KEY));
-    if (c && Date.now() - c.t < TTL) { el.textContent = c.v; return; }
+    if (c && c.v) { el.textContent = c.v; cached = true; }
   } catch (e) {}
 
   fetch('https://api.chess.com/pub/player/' + USER + '/stats')
@@ -345,6 +346,7 @@ if (homepageProjectsSection) {
       try { localStorage.setItem(KEY, JSON.stringify({ v: v, t: Date.now() })); } catch (e) {}
     })
     .catch(function () {
+      if (cached) return;
       var live = document.getElementById('chess-live');
       if (live) live.remove();
     });
