@@ -157,6 +157,12 @@
     visibility 0.5s ease;
 }
 
+/* Without JS nothing would ever remove the preloader, so skip it
+   (the inline <head> script adds .js to <html>). */
+html:not(.js) .preloader {
+  display: none;
+}
+
 /* No box, no border — just the monospace text sitting directly on
    the page background. Two real command/output pairs (whoami →
    fisayo, then a second command → the job title), since a single
