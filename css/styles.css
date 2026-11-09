@@ -969,7 +969,7 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 1.5;
   margin-bottom: 10px;
@@ -1128,7 +1128,7 @@ section {
 }
 
 .detail-body h2 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   margin: 48px 0 12px;
 }
