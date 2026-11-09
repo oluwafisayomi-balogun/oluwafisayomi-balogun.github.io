@@ -1019,12 +1019,6 @@ section {
   font-weight: 500;
 }
 
-/* Homepage rows carry a full and a short version of their copy; the
-   short one replaces the full one on small screens (see media query). */
-.desc-short {
-  display: none;
-}
-
 /* Tech stack line, under the description. */
 .project-row-stack {
   display: block;
@@ -1310,12 +1304,6 @@ footer span {
   }
   #about {
     padding-top: 35px;
-  }
-  .desc-full {
-    display: none;
-  }
-  .desc-short {
-    display: inline;
   }
 
   .page-heading {
