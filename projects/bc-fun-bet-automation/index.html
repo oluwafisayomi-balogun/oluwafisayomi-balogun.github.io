@@ -102,13 +102,21 @@
 
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Solo project</dd></div>
-          <div><dt>Status</dt><dd>Finished in September 2025</dd></div>
           <div><dt>Stack</dt><dd>Python, REST APIs, Chrome DevTools</dd></div>
       </dl>
 
       <div class="detail-body reveal">
           <h2>Problem</h2>
-          <p>Placing a bet means clicking through the website. This project shows the same thing done with a single function call.</p>
+          <p>bc.fun has no documented API, so placing a bet means clicking through its website.</p>
+
+          <h2>Solution</h2>
+          <dl class="detail-facts detail-stages">
+            <div><dt>Discovery</dt><dd>Placed a minimum-stake bet and watched the requests in the Chrome DevTools Network tab</dd></div>
+            <div><dt>Request</dt><dd>Rebuilt the bet request the way the site does: event, market, specifier and outcome joined with colons, and chained for combos</dd></div>
+            <div><dt>Auth</dt><dd>A bearer token, pasted in by hand</dd></div>
+            <div><dt>Interface</dt><dd>One function, <code>place_bet()</code>, for single bets and for combo and system bets</dd></div>
+            <div><dt>Errors</dt><dd>Timeouts, connection failures, HTTP errors and bad responses each return a different error</dd></div>
+          </dl>
 
           <h2>Limits</h2>
           <ul>
@@ -116,6 +124,9 @@
             <li>The bet details are entered by hand, so it automates placing a bet, not choosing one.</li>
             <li>It has no automated tests.</li>
           </ul>
+
+          <h2>Result</h2>
+          <p>Placed real bets from a single function call. The code is public on GitHub.</p>
       </div>
     </section>
 

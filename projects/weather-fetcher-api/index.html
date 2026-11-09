@@ -103,14 +103,21 @@
 
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Solo project</dd></div>
-          <div><dt>Status</dt><dd>Live on Render</dd></div>
           <div><dt>Stack</dt><dd>Python, Flask, REST APIs, Render</dd></div>
       </dl>
 
       <div class="detail-body reveal">
-          <h2>What it does</h2>
-          <p>You type a city name into a form. The backend makes two calls to OpenWeather, one to find the city's coordinates and one to fetch the weather for them, and shows the result.</p>
-          <p>The API key lives in an environment variable, not in the code.</p>
+          <h2>Solution</h2>
+          <dl class="detail-facts detail-stages">
+            <div><dt>Interface</dt><dd>A Flask web form where you type a city name</dd></div>
+            <div><dt>Lookup</dt><dd>A first call to OpenWeather finds the city's coordinates</dd></div>
+            <div><dt>Weather</dt><dd>A second call to OpenWeather fetches the weather for those coordinates</dd></div>
+            <div><dt>Config</dt><dd>The API key lives in an environment variable, not in the code</dd></div>
+            <div><dt>Hosting</dt><dd>Render</dd></div>
+          </dl>
+
+          <h2>Result</h2>
+          <p>Live on Render.</p>
       </div>
     </section>
 

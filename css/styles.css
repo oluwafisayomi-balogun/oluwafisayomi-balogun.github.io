@@ -1127,6 +1127,10 @@ section {
   line-height: 1.6;
 }
 
+/* A facts-style table inside the body (the architecture stages). */
+.detail-body .detail-facts {
+  margin: 0 0 14px;
+}
 .detail-body h2 {
   font-size: 18px;
   font-weight: 500;

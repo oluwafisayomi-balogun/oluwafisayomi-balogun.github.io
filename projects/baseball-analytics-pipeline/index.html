@@ -109,6 +109,19 @@
       <div class="detail-body reveal">
           <h2>Problem</h2>
           <p>A daily fantasy baseball player spent hours every day collecting MLB stats from several websites and scoring players by hand. The work repeated every day and had to be redone when lineups changed.</p>
+
+          <h2>Solution</h2>
+          <dl class="detail-facts detail-stages">
+            <div><dt>Trigger</dt><dd>A menu in the client's Google Sheet. Apps Script starts the run, so the client never touches code</dd></div>
+            <div><dt>Orchestration</dt><dd>GitHub Actions, with a controller that decides whether to scrape, scrape again or only re-score, from the state of the Sheet and whether lineups are confirmed</dd></div>
+            <div><dt>Collection</dt><dd>Python scrapers (Playwright) for several sources, run in parallel, including pages behind bot protection</dd></div>
+            <div><dt>Matching</dt><dd>Fuzzy name matching, because the sources share no player IDs</dd></div>
+            <div><dt>Scoring</dt><dd>A 150-point model that ranks players within each day's games</dd></div>
+            <div><dt>Output</dt><dd>Ranked results written back to seven tabs in the Sheet</dd></div>
+          </dl>
+
+          <h2>Result</h2>
+          <p>Each run takes 3 to 5 minutes, twice a day, in place of a multi-hour routine the client did by hand.</p>
       </div>
     </section>
 

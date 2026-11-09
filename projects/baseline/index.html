@@ -104,13 +104,25 @@
 
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Solo project</dd></div>
-          <div><dt>Status</dt><dd>In progress, and live</dd></div>
           <div><dt>Stack</dt><dd>Python, JavaScript, Supabase (Postgres, Auth, row-level security), GitHub Actions, Vercel</dd></div>
       </dl>
 
       <div class="detail-body reveal">
           <h2>Problem</h2>
-          <p>My investing ran on a spreadsheet and manual price checks. I wanted the daily moves and my own investing rules applied automatically, so I could make decisions faster.</p>
+          <p>My investing in the Nigerian stock market ran on a spreadsheet and manual price checks, and applying my own investing rules to each holding by hand was slow.</p>
+
+          <h2>Solution</h2>
+          <dl class="detail-facts detail-stages">
+            <div><dt>Data</dt><dd>Daily closing prices for 147 NGX-listed stocks and ETFs</dd></div>
+            <div><dt>Pipeline</dt><dd>A Python job on GitHub Actions each afternoon works out daily moves, streaks and 5-day moving-average signals</dd></div>
+            <div><dt>Storage</dt><dd>History files committed to the repo, and Supabase Postgres for the tracker</dd></div>
+            <div><dt>Site</dt><dd>A static site on Vercel showing the scanner</dd></div>
+            <div><dt>Tracker</dt><dd>A private, multi-user portfolio tracker with magic-link sign-in. Row-level security means each person can only read their own rows</dd></div>
+            <div><dt>Rules</dt><dd>My investing rules applied to the latest closing prices, flagging what needs attention</dd></div>
+          </dl>
+
+          <h2>Result</h2>
+          <p>Live and still in progress: 147 instruments scanned every day, plus a private tracker with a demo mode that needs no account.</p>
       </div>
       <p class="detail-note reveal">Prices sourced from NGX. Informational only, not investment advice.</p>
     </section>

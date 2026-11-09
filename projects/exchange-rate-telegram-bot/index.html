@@ -103,17 +103,24 @@
 
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Solo project</dd></div>
-          <div><dt>Status</dt><dd>Live on Fly.io</dd></div>
           <div><dt>Stack</dt><dd>Python, aiogram, asyncpg, PostgreSQL (Neon), APScheduler, Docker, Fly.io</dd></div>
       </dl>
 
       <div class="detail-body reveal">
-          <h2>What it does</h2>
-          <ul>
-            <li><code>/start</code> and <code>/rates</code> commands, with inline buttons for 17 base currencies.</li>
-            <li>A subscribe option and a daily broadcast of the rates.</li>
-            <li>A storage layer, a rate service and a scheduler, wired together in one entry point and deployed to a single Fly.io machine.</li>
-          </ul>
+          <h2>Problem</h2>
+          <p>Checking a naira rate means leaving the app you are in for a website, and the ECB rates, a common free source, have no naira at all.</p>
+
+          <h2>Solution</h2>
+          <dl class="detail-facts detail-stages">
+            <div><dt>Interface</dt><dd>A Telegram bot built with aiogram: <code>/start</code>, <code>/rates</code> and inline buttons for 17 base currencies</dd></div>
+            <div><dt>Rates</dt><dd>open.er-api, which includes NGN</dd></div>
+            <div><dt>Storage</dt><dd>PostgreSQL on Neon in production and a JSON file in development, behind one interface</dd></div>
+            <div><dt>Scheduler</dt><dd>APScheduler sends a daily rate message to subscribers</dd></div>
+            <div><dt>Hosting</dt><dd>A Docker image on a single Fly.io machine</dd></div>
+          </dl>
+
+          <h2>Result</h2>
+          <p>Live on Fly.io, with rates for 17 base currencies and a daily broadcast to subscribers.</p>
       </div>
     </section>
 
