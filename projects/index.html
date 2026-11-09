@@ -121,16 +121,15 @@
           <div class="project-row-main">
             <div class="project-row-title">Lagos Ferry Map</div>
             <div class="project-row-desc">
-              The backend and data pipeline behind Lagos's first
-              GTFS-compliant ferry dataset, now on Google Maps,
-              OpenStreetMap and the Mobility Database. A Node/Express/Drizzle
-              API on PostgreSQL powers public-facing crowdsourced submission
-              forms for jetties and routes. A parallel Python toolchain,
-              containerised with Docker on Cloud Run, publishes the GTFS feed,
+              Backend and data pipeline work on Lagos's GTFS ferry
+              dataset, now on Google Maps, OpenStreetMap and the Mobility
+              Database. A Node/Express/Drizzle API on PostgreSQL powers
+              public-facing crowdsourced submission forms for jetties and
+              routes. A parallel Python toolchain publishes the GTFS feed,
               syncs route geometry from OSM/GeoJSON sources, and runs
               automated data-quality checks against the live database.
             </div>
-            <div class="project-row-stack">Node.js · Express · TypeScript · Drizzle ORM · PostgreSQL · Python · Docker · Cloud Run · GTFS · OpenStreetMap</div>
+            <div class="project-row-stack">Node.js · Express · TypeScript · Drizzle ORM · PostgreSQL · Python · GTFS · OpenStreetMap · Railway</div>
           </div>
         </a>
 
@@ -140,12 +139,12 @@
             <div class="project-row-desc">
               A production
               data pipeline that automates a full baseball-analytics workflow.
-              It scrapes live stats from five bot-protected sources,
+              It scrapes live stats from several sources,
               joins them with fuzzy name-matching, and runs a 150-point scoring
               model, writing ranked results back to Google Sheets. A
               non-technical client triggers the whole run from a spreadsheet
-              button, turning a multi-hour daily process into a 5-minute
-              one-click run. <strong>Click through to request a demo.</strong>
+              button, turning a multi-hour daily process into a one-click run
+              of a few minutes. <strong>Click through to request a demo.</strong>
             </div>
             <div class="project-row-stack">Python · Playwright · pandas · Google Sheets API · GitHub Actions</div>
           </div>
@@ -156,9 +155,9 @@
             <div class="project-row-title">bc.fun Sports Bet Automation</div>
             <div class="project-row-desc">
               Reverse-engineered an undocumented REST API to place single and
-              combo bets programmatically on bc.fun. Implemented JWT auth,
-              input validation, and robust error handling, reducing manual
-              execution to a single function call.
+              combo bets programmatically on bc.fun, reducing manual
+              execution to a single function call. Returns a clear error for
+              timeouts, connection failures, HTTP errors and bad responses.
             </div>
             <div class="project-row-stack">Python · REST APIs · Chrome DevTools</div>
           </div>
@@ -184,12 +183,12 @@
               A personal finance tool I built to replace the manual work behind
               my investing in the Nigerian stock market, so I can analyse and
               make decisions faster. A public price-trend scanner for about
-              130 NGX-listed stocks and ETFs turns NGX's daily closing prices
+              150 NGX-listed stocks and ETFs turns NGX's daily closing prices
               into daily moves, streaks and 5-day moving-average signals. A
               private, multi-user portfolio tracker on Supabase, with
               magic-link sign-in and row-level security, replaces my investing
-              spreadsheet and applies my investing rules to live prices,
-              flagging what needs attention. Prices sourced from NGX.
+              spreadsheet and applies my investing rules to the latest closing
+              prices, flagging what needs attention. Prices sourced from NGX.
               Informational only, not investment advice.
             </div>
             <div class="project-row-stack">Python · JavaScript · Supabase (Postgres, Auth, RLS)</div>
@@ -205,11 +204,9 @@
               election integrity, democracy levels, term-limit compliance,
               coups and conflict, and country context pages. Handled data
               sourcing, cleaning and pipelines, and automated election data
-              workflows from collection to processing in Python, cutting
-              manual data entry by over 80%. Also built a GPT-based pipeline
-              that pulls content from RSS feeds and web searches, summarises
-              it, and writes it to Google Docs, cutting content processing
-              time by 85%.
+              workflows from collection to processing in Python. Also built a
+              GPT-based pipeline that pulls content from RSS feeds and web
+              searches, summarises it, and writes it to Google Docs.
             </div>
             <div class="project-row-stack">Python · OpenAI API · Google Docs API · Flourish · Data Pipelines</div>
           </div>
@@ -219,8 +216,8 @@
           <div class="project-row-main">
             <div class="project-row-title">Weather Fetcher API</div>
             <div class="project-row-desc">
-              Flask backend that chains multiple third-party API calls to convert
-              city names into real-time weather insights. Securely manages API
+              Flask backend that chains a geocoding call and a weather call to
+              convert city names into real-time weather insights. Securely manages API
               keys with env vars and deployed to Render.
             </div>
             <div class="project-row-stack">Python · Flask · REST APIs · Render</div>
