@@ -97,12 +97,11 @@
       <p class="page-sub reveal">A pipeline that turns a multi-hour daily baseball-analytics routine into a one-click run from a spreadsheet.</p>
 
       <div class="detail-actions reveal">
-        <a href="mailto:hello@fisayo.dev?subject=Demo%20request%3A%20Baseball%20analytics%20pipeline" class="btn btn-ghost">Request a demo</a>
+        <a href="mailto:hello@fisayo.dev?subject=Demo%20request%3A%20Baseball%20analytics%20pipeline" class="btn btn-ghost" data-tip="Opens your email app with a message already written. Nothing is sent until you press send." aria-label="Request a demo. Opens your email app with a message already written. Nothing is sent until you press send.">Request a demo</a>
       </div>
-      <p class="detail-note reveal">Request a demo opens your email app with a message already written. Nothing is sent until you press send.</p>
 
       <dl class="detail-facts reveal">
-          <div><dt>Role</dt><dd>Built end to end for a client</dd></div>
+          <div><dt>Role</dt><dd>Built end to end</dd></div>
           <div><dt>Stack</dt><dd>Python, Playwright, pandas, Google Sheets API, Apps Script, GitHub Actions</dd></div>
       </dl>
 
@@ -112,12 +111,12 @@
 
           <h2>Solution</h2>
           <dl class="detail-facts detail-stages">
-            <div><dt>Trigger</dt><dd>A menu in the client's Google Sheet. Apps Script starts the run, so the client never touches code</dd></div>
-            <div><dt>Orchestration</dt><dd>GitHub Actions, with a controller that decides whether to scrape, scrape again or only re-score, from the state of the Sheet and whether lineups are confirmed</dd></div>
+            <div><dt>Trigger</dt><dd>A menu in the client's Google Sheet. Apps Script starts the run</dd></div>
+            <div><dt>Orchestration</dt><dd>GitHub Actions, with a controller that decides whether to scrape or only re-score, based on what is already in the Sheet and whether lineups are confirmed</dd></div>
             <div><dt>Collection</dt><dd>Python scrapers (Playwright) for several sources, run in parallel, including pages behind bot protection</dd></div>
             <div><dt>Matching</dt><dd>Fuzzy name matching, because the sources share no player IDs</dd></div>
             <div><dt>Scoring</dt><dd>A 150-point model that ranks players within each day's games</dd></div>
-            <div><dt>Output</dt><dd>Ranked results written back to seven tabs in the Sheet</dd></div>
+            <div><dt>Output</dt><dd>Ranked results written back to several tabs in the Sheet</dd></div>
           </dl>
 
           <h2>Result</h2>
