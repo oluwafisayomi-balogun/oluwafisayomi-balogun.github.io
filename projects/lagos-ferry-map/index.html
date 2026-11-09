@@ -105,22 +105,25 @@
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Data engineer and associate on a team project</dd></div>
           <div><dt>Period</dt><dd>February 2025 to present</dd></div>
-          <div><dt>Status</dt><dd>Live. The dataset is on Google Maps, OpenStreetMap and the Mobility Database.</dd></div>
           <div><dt>Stack</dt><dd>Node.js, Express, TypeScript, Drizzle ORM, PostgreSQL, Python, Jython, GTFS, OpenStreetMap, JOSM, Railway</dd></div>
       </dl>
 
       <div class="detail-body reveal">
           <h2>Problem</h2>
-          <p>Ferries in Lagos have no public documentation, so commuters find out about routes by word of mouth. The project makes the ferry network visible, so more people use the water instead of the roads.</p>
-          <p>The data comes from the LASWA list, Google Maps and OpenStreetMap, field contractors, operator interviews and GPS logs, and is updated quarterly.</p>
+          <p>Lagos has ferry routes but no public documentation of them, so commuters learn about them by word of mouth. The goal is to make the network easy to find, so more trips move from the roads to the water. I helped turn scattered sources into one dataset, published as a GTFS feed that Google Maps and other apps read, and refreshed every quarter.</p>
 
-          <h2>How the system works</h2>
+          <h2>Data</h2>
+          <p>Jetties, routes and schedules from the LASWA list, Google Maps and OpenStreetMap, field contractors, operator interviews and GPS logs. Commuters and map apps use it to plan ferry trips.</p>
+
+          <h2>How it works</h2>
+          <p>Public sources and field surveys → forms app with a review queue → PostgreSQL → Python toolchain → GTFS feed → Google Maps, OpenStreetMap and the Mobility Database</p>
           <ul>
-            <li>A forms app takes public submissions for jetties and routes.</li>
             <li>A submission that changes a critical field is held for review instead of being applied. Critical means facility type, schedule flags, hyacinth season, or a fare rise of 50% or more.</li>
-            <li>A Python toolchain turns the database into a GTFS feed. It fingerprints the output so the feed version only changes when the data does, and publishes the zip for the site to serve.</li>
-            <li>The public map is a separate Next.js app.</li>
+            <li>The toolchain fingerprints the feed so its version only changes when the data does.</li>
           </ul>
+
+          <h2>Result</h2>
+          <p>Published as a public GTFS feed, and live on Google Maps, OpenStreetMap and the Mobility Database.</p>
       </div>
     </section>
 
