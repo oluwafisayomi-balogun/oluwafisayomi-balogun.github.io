@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baseball Analytics Automation Pipeline · Oluwafisayomi Balogun</title>
+    <meta name="description" content="A pipeline that turns a multi-hour daily baseball-analytics routine into a one-click run from a spreadsheet." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Oluwafisayomi Balogun" />
+    <meta property="og:title" content="Baseball Analytics Automation Pipeline · Oluwafisayomi Balogun" />
+    <meta property="og:description" content="A pipeline that turns a multi-hour daily baseball-analytics routine into a one-click run from a spreadsheet." />
+    <meta property="og:url" content="https://fisayo.dev/projects/baseball-analytics-pipeline" />
+    <meta property="og:image" content="https://fisayo.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fisayo.dev/og-image.png" />
+    <meta name="twitter:title" content="Baseball Analytics Automation Pipeline · Oluwafisayomi Balogun" />
+    <meta name="twitter:description" content="A pipeline that turns a multi-hour daily baseball-analytics routine into a one-click run from a spreadsheet." />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- =============================================
+      FONT
+      DM Mono → the one typeface used across the whole site.
+      Self-hosted (fonts/, @font-face in styles.css) rather than
+      loaded from Google Fonts: that stylesheet blocked first paint
+      on two extra connections, which on mobile data meant seconds
+      of the previous page staying on screen after a tap.
+      Preloading the regular weight lets it arrive with the CSS.
+    ============================================= -->
+    <link rel="preload" href="/fonts/dm-mono-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- All styles live in css/styles.css -->
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <!-- Set the theme before first paint, so there's no flash of the
+         wrong theme while js/main.js (loaded at end of body) runs. -->
+    <script>
+      (function () {
+        document.documentElement.classList.add('js');
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+      })();
+    </script>
+  </head>
+
+  <body>
+
+    <!-- =============================================
+      NAVIGATION
+      Same markup as index.html, with root-relative anchors (/#about).
+    ============================================= -->
+    <nav id="nav">
+      <a class="nav-logo" href="/">~/fisayo</a>
+
+      <!-- Desktop nav links (hidden on mobile via CSS) -->
+      <div class="nav-links">
+        <a href="/projects/" aria-current="page">/Projects</a>
+        <a href="/#about">/About</a>
+        <a href="/#contact">/Contact</a>
+        <a href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/view" target="_blank" rel="noopener">/Résumé</a>
+        <button class="theme-toggle" aria-label="Toggle theme" type="button">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span class="theme-toggle-label">Theme</span>
+        </button>
+      </div>
+
+      <!-- Hamburger button (only visible on mobile via CSS) -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+      <!-- Mobile menu panel — toggled by hamburger button via JS -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/projects/" aria-current="page">/Projects</a>
+      <a href="/#about">/About</a>
+      <a href="/#contact">/Contact</a>
+      <a href="https://docs.google.com/document/d/1QqSWtludBeXAiuuygdmcABMainnRWDTpi7isFsTmQqs/view" target="_blank" rel="noopener">/Résumé</a>
+      <button class="theme-toggle" aria-label="Toggle theme" type="button">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+    </div>
+
+    <!-- =============================================
+      PROJECT DETAIL
+      Generated from the same template as the other project pages.
+    ============================================= -->
+    <section class="detail">
+      <a href="/projects/" class="page-back reveal">← Projects</a>
+      <h1 class="page-heading reveal">Baseball Analytics Automation Pipeline</h1>
+      <p class="page-sub reveal">A pipeline that turns a multi-hour daily baseball-analytics routine into a one-click run from a spreadsheet.</p>
+
+      <div class="detail-actions reveal">
+        <a href="mailto:hello@fisayo.dev?subject=Demo%20request%3A%20Baseball%20analytics%20pipeline" class="btn btn-ghost">Request a demo</a>
+      </div>
+      <p class="detail-note reveal">Request a demo opens your email app with a message already written. Nothing is sent until you press send.</p>
+
+      <dl class="detail-facts reveal">
+          <div><dt>Role</dt><dd>Built end to end for a client</dd></div>
+          <div><dt>Stack</dt><dd>Python, Playwright, pandas, Google Sheets API, Apps Script, GitHub Actions</dd></div>
+      </dl>
+
+      <div class="detail-body reveal">
+          <h2>Problem</h2>
+          <p>A daily fantasy baseball player spent hours every day collecting MLB stats from several websites and scoring players by hand. The work repeated every day and had to be redone when lineups changed.</p>
+      </div>
+    </section>
+
+    <!-- =============================================
+      FOOTER
+      Edit: name, year, tagline.
+    ============================================= -->
+    <footer>
+      <span>© <span class="footer-year">2026</span> Oluwafisayomi Balogun</span>
+    </footer>
+
+    <!-- Script at end of <body> so all HTML elements
+         exist before JS tries to query them. -->
+    <script src="/js/main.js"></script>
+
+  </body>
+</html>

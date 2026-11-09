@@ -1081,6 +1081,100 @@ section {
 }
 
 /* ================================================================
+   PROJECT DETAIL PAGES (projects/<name>/index.html)
+   Reuses .page-back, .page-heading, .page-sub and .btn-ghost.
+================================================================ */
+.detail .page-sub {
+  margin-bottom: 32px;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.detail-actions .btn {
+  padding: 11px 24px;
+}
+
+.detail-note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* Key facts: label on the left, value on the right, one rule per row. */
+.detail-facts {
+  margin: 40px 0 56px;
+  border-top: 1px solid var(--border);
+}
+.detail-facts > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.detail-facts dt {
+  font-size: 13px;
+  color: var(--muted);
+}
+.detail-facts dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.detail-body h2 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 48px 0 12px;
+}
+.detail-body h2:first-child {
+  margin-top: 0;
+}
+.detail-body p,
+.detail-body li {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.detail-body p {
+  margin-bottom: 14px;
+}
+.detail-body ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+.detail-body li {
+  margin-bottom: 8px;
+}
+.detail-body a,
+.detail-facts a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.detail-body a:hover,
+.detail-facts a:hover {
+  color: var(--highlight);
+}
+
+/* Cards that open a detail page on this site show → instead of ↗. */
+.project-row--page .project-row-title::after {
+  content: "→";
+}
+
+@media (max-width: 768px) {
+  .detail-facts > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ================================================================
    10. CONTACT SECTION
    Heading + description + link buttons.
 ================================================================ */
