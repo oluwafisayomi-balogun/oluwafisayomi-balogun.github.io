@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Baseline · Oluwafisayomi Balogun</title>
-    <meta name="description" content="A personal finance tool for investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
+    <meta name="description" content="A personal finance tool for smarter investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Oluwafisayomi Balogun" />
     <meta property="og:title" content="Baseline · Oluwafisayomi Balogun" />
-    <meta property="og:description" content="A personal finance tool for investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
+    <meta property="og:description" content="A personal finance tool for smarter investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
     <meta property="og:url" content="https://fisayo.dev/projects/baseline" />
     <meta property="og:image" content="https://fisayo.dev/og-image.png" />
     <meta property="og:image:width" content="1200" />
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://fisayo.dev/og-image.png" />
     <meta name="twitter:title" content="Baseline · Oluwafisayomi Balogun" />
-    <meta name="twitter:description" content="A personal finance tool for investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
+    <meta name="twitter:description" content="A personal finance tool for smarter investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker." />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <!-- =============================================
       FONT
@@ -94,13 +94,12 @@
     <section class="detail">
       <a href="/projects/" class="page-back reveal">← Projects</a>
       <h1 class="page-heading reveal">Baseline <span class="project-tag">In progress</span></h1>
-      <p class="page-sub reveal">A personal finance tool for investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker.</p>
+      <p class="page-sub reveal">A personal finance tool for smarter investing in the Nigerian stock market: a price-trend scanner and a private portfolio tracker.</p>
 
       <div class="detail-actions reveal">
         <a href="https://baseline-topaz-zeta.vercel.app/" class="btn btn-ghost" target="_blank" rel="noopener">Open Baseline</a>
-        <a href="https://baseline-topaz-zeta.vercel.app/portfolio/?demo" class="btn btn-ghost" target="_blank" rel="noopener">Try the demo</a>
+        <a href="https://baseline-topaz-zeta.vercel.app/portfolio/?demo" class="btn btn-ghost" target="_blank" rel="noopener" data-tip="The demo needs no account." aria-label="Try the demo. The demo needs no account.">Try the demo</a>
       </div>
-      <p class="detail-note reveal">The demo needs no account.</p>
 
       <dl class="detail-facts reveal">
           <div><dt>Role</dt><dd>Solo project</dd></div>
@@ -114,17 +113,16 @@
           <h2>Solution</h2>
           <dl class="detail-facts detail-stages">
             <div><dt>Data</dt><dd>Daily closing prices for 147 NGX-listed stocks and ETFs</dd></div>
-            <div><dt>Pipeline</dt><dd>A Python job on GitHub Actions each afternoon works out daily moves, streaks and 5-day moving-average signals</dd></div>
+            <div><dt>Pipeline</dt><dd>A Python job on GitHub Actions each day works out daily moves, streaks and 5-day moving-average signals</dd></div>
             <div><dt>Storage</dt><dd>History files committed to the repo, and Supabase Postgres for the tracker</dd></div>
             <div><dt>Site</dt><dd>A static site on Vercel showing the scanner</dd></div>
-            <div><dt>Tracker</dt><dd>A private, multi-user portfolio tracker with magic-link sign-in. Row-level security means each person can only read their own rows</dd></div>
-            <div><dt>Rules</dt><dd>My investing rules applied to the latest closing prices, flagging what needs attention</dd></div>
+            <div><dt>Tracker</dt><dd>A private, multi-user portfolio tracker with magic-link sign-in</dd></div>
+            <div><dt>Rules</dt><dd>Investing rules applied to the latest closing prices, flagging what needs attention. You can personalize your own rules</dd></div>
           </dl>
 
           <h2>Result</h2>
-          <p>Live and still in progress: 147 instruments scanned every day, plus a private tracker with a demo mode that needs no account.</p>
+          <p>Live and still in progress: 147 instruments scanned every weekday, plus a private tracker with a demo mode that needs no account.</p>
       </div>
-      <p class="detail-note reveal">Prices sourced from NGX. Informational only, not investment advice.</p>
     </section>
 
     <!-- =============================================
