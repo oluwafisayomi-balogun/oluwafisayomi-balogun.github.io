@@ -1125,6 +1125,12 @@ section {
 .detail-actions .btn[data-tip]:focus-visible::after {
   opacity: 1;
 }
+/* Touch screens have no hover, so the tooltip would only flash on tap. */
+@media (hover: none) {
+  .detail-actions .btn[data-tip]::after {
+    display: none;
+  }
+}
 
 .detail-note {
   font-size: 13px;
